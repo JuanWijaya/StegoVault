@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { 
   Shield, 
   FolderPlus, 
@@ -28,6 +28,53 @@ export const Dashboard: React.FC<DashboardProps> = ({
   const [activeTab, setActiveTab] = useState<'mount' | 'create'>('mount');
   const [isDragOver, setIsDragOver] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Typewriter Loop State (StegoVault <-> Amankan Berkas Rahasia...)
+  const [phraseIndex, setPhraseIndex] = useState<0 | 1>(0);
+  const [charIndex, setCharIndex] = useState<number>(0);
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
+
+  const BRAND_TEXT = 'StegoVault';
+  const LINE_1 = 'Amankan Berkas Rahasia';
+  const LINE_2 = 'dalam Satu Kontainer PDF';
+  const PHRASE_2_TOTAL = LINE_1.length + LINE_2.length; // 22 + 24 = 46
+
+  useEffect(() => {
+    const isBrand = phraseIndex === 0;
+    const maxChars = isBrand ? BRAND_TEXT.length : PHRASE_2_TOTAL;
+
+    const typeSpeed = 55;
+    const eraseSpeed = 25;
+    const pauseAtEnd = 2400;
+    const pauseAtEmpty = 400;
+
+    let timer: NodeJS.Timeout;
+
+    if (!isDeleting) {
+      if (charIndex < maxChars) {
+        timer = setTimeout(() => {
+          setCharIndex(prev => prev + 1);
+        }, typeSpeed);
+      } else {
+        timer = setTimeout(() => {
+          setIsDeleting(true);
+        }, pauseAtEnd);
+      }
+    } else {
+      if (charIndex > 0) {
+        timer = setTimeout(() => {
+          setCharIndex(prev => prev - 1);
+        }, eraseSpeed);
+      } else {
+        timer = setTimeout(() => {
+          setIsDeleting(false);
+          setPhraseIndex(prev => (prev === 0 ? 1 : 0));
+        }, pauseAtEmpty);
+      }
+    }
+
+    return () => clearTimeout(timer);
+  }, [charIndex, isDeleting, phraseIndex]);
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -64,13 +111,36 @@ export const Dashboard: React.FC<DashboardProps> = ({
             <span>Enkripsi Client-Side * AES-256-GCM &amp; PBKDF2</span>
           </div>
 
-          {/* Hero Headline dengan Animasi Shimmer Sheen */}
-          <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight">
-            Amankan Berkas Rahasia{' '}
-            <span className="block bg-[linear-gradient(110deg,#FFFFFF,35%,#93C5FD,50%,#FFFFFF)] bg-[length:200%_100%] animate-text-sheen bg-clip-text text-transparent">
-              dalam Satu Kontainer PDF
-            </span>
-          </h1>
+          {/* Hero Headline Dinamis dengan Efek Typewriter Loop & Sheen Sinkron */}
+          <div className="min-h-[140px] sm:min-h-[160px] md:min-h-[175px] flex flex-col justify-center items-center">
+            {phraseIndex === 0 ? (
+              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight leading-none py-1">
+                <span className="sheen-text">
+                  {BRAND_TEXT.slice(0, charIndex)}
+                </span>
+                <span className="inline-block w-1.5 md:w-2 h-[0.75em] ml-2 bg-sky-400 animate-pulse align-middle rounded-xs" />
+              </h1>
+            ) : (
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight md:leading-snug text-center">
+                <span className="block">
+                  <span className="sheen-text">
+                    {charIndex <= LINE_1.length ? LINE_1.slice(0, charIndex) : LINE_1}
+                  </span>
+                  {charIndex <= LINE_1.length && (
+                    <span className="inline-block w-1 md:w-1.5 h-[0.8em] ml-1.5 bg-sky-400 animate-pulse align-middle rounded-xs" />
+                  )}
+                </span>
+                <span className="block min-h-[1.2em]">
+                  <span className="sheen-text">
+                    {charIndex > LINE_1.length ? LINE_2.slice(0, charIndex - LINE_1.length) : ''}
+                  </span>
+                  {charIndex > LINE_1.length && (
+                    <span className="inline-block w-1 md:w-1.5 h-[0.8em] ml-1.5 bg-sky-400 animate-pulse align-middle rounded-xs" />
+                  )}
+                </span>
+              </h1>
+            )}
+          </div>
 
           <p className="text-base sm:text-lg text-[#B8C7F0] max-w-2xl mx-auto leading-relaxed">
             Simpan, kelola, dan pratinjau dokumen pribadi secara on-the-fly langsung di browser tanpa server eksternal.

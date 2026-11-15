@@ -41,7 +41,17 @@
 
 .animate-text-sheen {
   background-size: 200% 100%;
-  animation: text-sheen 7s ease-in-out infinite;
+  animation: text-sheen 6s ease-in-out infinite;
+}
+
+.sheen-text {
+  background-image: linear-gradient(110deg, #FFFFFF 25%, #C4B5FD 45%, #67E8F9 55%, #FFFFFF 75%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: text-sheen 6s ease-in-out infinite;
 }
 
 /* 2. Cryptographic Pipeline Flow Animation */
