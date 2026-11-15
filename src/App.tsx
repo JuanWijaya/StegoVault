@@ -190,9 +190,9 @@ export default function App() {
       />
 
       <footer className="border-t border-slate-200 bg-white px-6 py-6 text-center text-xs text-[#64748B]">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p>© 2026 StegoVault * Web-Based Encrypted Container Vault (PDF-Wrapped).</p>
-          <p className="font-mono text-[#64748B]">Client-Side Zero-Knowledge • OWASP PBKDF2 (310k) • AES-256-GCM</p>
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p>© 2026 StegoVault * Web-Based Encrypted Container Vault.</p>
+          <p>Lomba CAPSTONE 2026 • Kriptografi dan Keamanan Data</p>
         </div>
       </footer>
     </div>

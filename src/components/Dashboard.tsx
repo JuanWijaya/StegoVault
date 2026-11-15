@@ -105,12 +105,6 @@ export const Dashboard: React.FC<DashboardProps> = ({
       {/* Zona Atas: Split-Tone Deep Navy to Royal Cobalt with Fluted Ribbed Texture */}
       <section className="fluted-hero-bg pt-12 pb-24 px-4 sm:px-6 relative overflow-hidden text-center">
         <div className="max-w-6xl mx-auto relative z-10 space-y-6">
-          {/* Frosted Pill Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-[#B8C7F0] text-xs font-medium backdrop-blur-md shadow-sm transition-all hover:bg-white/15">
-            <Lock className="w-3.5 h-3.5 text-sky-300" />
-            <span>Enkripsi Client-Side * AES-256-GCM &amp; PBKDF2</span>
-          </div>
-
           {/* Hero Headline Dinamis dengan Efek Typewriter Loop & Sheen Sinkron */}
           <div className="min-h-[140px] sm:min-h-[160px] md:min-h-[175px] flex flex-col justify-center items-center">
             {phraseIndex === 0 ? (
@@ -157,11 +151,8 @@ export const Dashboard: React.FC<DashboardProps> = ({
                 <div className="w-12 h-12 rounded-2xl bg-[#EEF2FF] text-[#163AC7] flex items-center justify-center mb-5 group-hover:scale-105 transition-transform duration-300">
                   <Shield className="w-6 h-6" />
                 </div>
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#EEF2FF] text-[#163AC7] text-[11px] font-bold font-mono mb-2">
-                  <span>Zero-Config</span>
-                </div>
-                <h3 className="text-2xl font-extrabold text-[#0B132B]">256-Bit</h3>
-                <p className="text-xs font-semibold text-[#163AC7] uppercase tracking-wider font-mono">
+                <h3 className="text-3xl font-extrabold text-[#0B132B]">256-Bit</h3>
+                <p className="text-xs font-semibold text-[#163AC7] uppercase tracking-wider font-mono mt-0.5">
                   AES-GCM Encryption
                 </p>
                 <p className="text-xs text-[#64748B] mt-3 leading-relaxed">
@@ -255,10 +246,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
                     </p>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
-                    <span className="text-xs font-mono text-[#64748B]">
-                      Ekstraksi O(1) * 100% Client-Side
-                    </span>
+                  <div className="flex items-center justify-end pt-2">
                     <button
                       type="button"
                       onClick={() => fileInputRef.current?.click()}
@@ -301,10 +289,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
                     </div>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
-                    <span className="text-xs font-mono text-[#64748B]">
-                      Zero-Knowledge Enclave
-                    </span>
+                  <div className="flex items-center justify-end pt-2">
                     <button
                       type="button"
                       onClick={onCreateVolumeClick}
@@ -386,10 +371,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
       <section className="bg-[#F4F6FA] pt-16 pb-8 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto space-y-12">
           <div className="text-center space-y-2">
-            <span className="text-xs font-bold px-3.5 py-1.5 rounded-full bg-[#EEF2FF] text-[#163AC7] border border-blue-200 uppercase tracking-wider font-mono">
-              Keunggulan Kriptografi
-            </span>
-            <h2 className="text-3xl font-bold tracking-tight text-[#0B132B] pt-2">
+            <h2 className="text-3xl font-bold tracking-tight text-[#0B132B]">
               Keamanan Tingkat Industri Tanpa Konfigurasi Rumit
             </h2>
             <p className="text-sm text-[#64748B] max-w-xl mx-auto leading-relaxed">
