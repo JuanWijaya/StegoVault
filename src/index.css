@@ -29,6 +29,50 @@
   pointer-events: none;
 }
 
+/* 1. Headline Shimmer Sheen Animation */
+@keyframes text-sheen {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.animate-text-sheen {
+  background-size: 200% 100%;
+  animation: text-sheen 7s ease-in-out infinite;
+}
+
+/* 2. Cryptographic Pipeline Flow Animation */
+@keyframes pipeline-flow {
+  from {
+    stroke-dashoffset: 24;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.animate-pipeline-flow {
+  stroke-dasharray: 6 6;
+  animation: pipeline-flow 1.2s linear infinite;
+}
+
+/* 3. Drag-Over Border Beam Pulse */
+@keyframes drag-glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(59, 91, 255, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(59, 91, 255, 0);
+  }
+}
+
+.animate-drag-pulse {
+  animation: drag-glow-pulse 1.8s ease-out infinite;
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;

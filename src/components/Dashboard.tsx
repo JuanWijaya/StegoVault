@@ -12,6 +12,7 @@ import {
   Cpu,
   Layers
 } from 'lucide-react';
+import { SpotlightCard } from './SpotlightCard.tsx';
 
 interface DashboardProps {
   onCreateVolumeClick: () => void;
@@ -58,14 +59,15 @@ export const Dashboard: React.FC<DashboardProps> = ({
       <section className="fluted-hero-bg pt-12 pb-24 px-4 sm:px-6 relative overflow-hidden text-center">
         <div className="max-w-6xl mx-auto relative z-10 space-y-6">
           {/* Frosted Pill Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-[#B8C7F0] text-xs font-medium backdrop-blur-md shadow-sm">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-[#B8C7F0] text-xs font-medium backdrop-blur-md shadow-sm transition-all hover:bg-white/15">
             <Lock className="w-3.5 h-3.5 text-sky-300" />
             <span>Enkripsi Client-Side * AES-256-GCM &amp; PBKDF2</span>
           </div>
 
+          {/* Hero Headline dengan Animasi Shimmer Sheen */}
           <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight">
             Amankan Berkas Rahasia{' '}
-            <span className="block bg-gradient-to-r from-white via-sky-200 to-blue-200 bg-clip-text text-transparent">
+            <span className="block bg-[linear-gradient(110deg,#FFFFFF,35%,#93C5FD,50%,#FFFFFF)] bg-[length:200%_100%] animate-text-sheen bg-clip-text text-transparent">
               dalam Satu Kontainer PDF
             </span>
           </h1>
@@ -74,12 +76,15 @@ export const Dashboard: React.FC<DashboardProps> = ({
             Simpan, kelola, dan pratinjau dokumen pribadi secara on-the-fly langsung di browser tanpa server eksternal.
           </p>
 
-          {/* The 3-Card Vault Showcase */}
+          {/* The 3-Card Vault Showcase with Spotlight Effect */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-6 items-stretch text-left">
             {/* Card 1: Left Floating White Card - Spesifikasi Keamanan Tetap */}
-            <div className="lg:col-span-3 rounded-3xl bg-white p-6 shadow-2xl flex flex-col justify-between border border-slate-100">
+            <SpotlightCard 
+              className="lg:col-span-3 rounded-3xl bg-white p-6 shadow-2xl flex flex-col justify-between border border-slate-100"
+              spotlightColor="rgba(59, 91, 255, 0.08)"
+            >
               <div>
-                <div className="w-12 h-12 rounded-2xl bg-[#EEF2FF] text-[#163AC7] flex items-center justify-center mb-5">
+                <div className="w-12 h-12 rounded-2xl bg-[#EEF2FF] text-[#163AC7] flex items-center justify-center mb-5 group-hover:scale-105 transition-transform duration-300">
                   <Shield className="w-6 h-6" />
                 </div>
                 <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#EEF2FF] text-[#163AC7] text-[11px] font-bold font-mono mb-2">
@@ -95,7 +100,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
               </div>
 
               <div className="mt-6 pt-4 border-t border-slate-100 space-y-2">
-                <div className="p-3 rounded-2xl bg-[#F4F6FA] border border-slate-200/70">
+                <div className="p-3 rounded-2xl bg-[#F4F6FA] border border-slate-200/70 group-hover:border-blue-200/60 transition-colors">
                   <span className="text-[11px] font-mono text-[#0B132B] font-semibold block">
                     PBKDF2-SHA256
                   </span>
@@ -108,20 +113,28 @@ export const Dashboard: React.FC<DashboardProps> = ({
                   <span>Hardware CSPRNG + Mouse</span>
                 </div>
               </div>
-            </div>
+            </SpotlightCard>
 
             {/* Card 2: Centerpiece Elevated White Card - Aksi Utama Buat / Mount */}
-            <div className="lg:col-span-6 rounded-[28px] bg-white p-6 sm:p-7 shadow-2xl border border-slate-100 flex flex-col justify-between relative">
-              {/* Segmented Pill Switcher */}
-              <div className="flex items-center p-1.5 bg-[#F4F6FA] rounded-full border border-slate-200/80 mb-6">
+            <SpotlightCard 
+              className="lg:col-span-6 rounded-[28px] bg-white p-6 sm:p-7 shadow-2xl border border-slate-100 flex flex-col justify-between"
+              spotlightColor="rgba(59, 91, 255, 0.08)"
+            >
+              {/* Gliding Segmented Pill Switcher */}
+              <div className="relative flex items-center p-1.5 bg-[#F4F6FA] rounded-full border border-slate-200/80 mb-6">
+                <div 
+                  className={`absolute top-1.5 bottom-1.5 rounded-full bg-white shadow-sm transition-all duration-300 ease-out z-0 ${
+                    activeTab === 'mount' 
+                      ? 'left-1.5 w-[calc(50%-6px)]' 
+                      : 'left-[calc(50%+3px)] w-[calc(50%-6px)]'
+                  }`}
+                />
                 <button
                   type="button"
                   onClick={() => setActiveTab('mount')}
                   aria-label="Pilih mode buka kontainer"
-                  className={`flex-1 min-h-[44px] flex items-center justify-center gap-2 rounded-full text-xs font-bold transition-all ${
-                    activeTab === 'mount'
-                      ? 'bg-white text-[#163AC7] shadow-sm'
-                      : 'text-[#64748B] hover:text-[#0B132B]'
+                  className={`relative z-10 flex-1 min-h-[44px] flex items-center justify-center gap-2 rounded-full text-xs font-bold transition-colors duration-200 ${
+                    activeTab === 'mount' ? 'text-[#163AC7]' : 'text-[#64748B] hover:text-[#0B132B]'
                   }`}
                 >
                   <FileUp className="w-4 h-4" />
@@ -131,10 +144,8 @@ export const Dashboard: React.FC<DashboardProps> = ({
                   type="button"
                   onClick={() => setActiveTab('create')}
                   aria-label="Pilih mode buat kontainer baru"
-                  className={`flex-1 min-h-[44px] flex items-center justify-center gap-2 rounded-full text-xs font-bold transition-all ${
-                    activeTab === 'create'
-                      ? 'bg-white text-[#163AC7] shadow-sm'
-                      : 'text-[#64748B] hover:text-[#0B132B]'
+                  className={`relative z-10 flex-1 min-h-[44px] flex items-center justify-center gap-2 rounded-full text-xs font-bold transition-colors duration-200 ${
+                    activeTab === 'create' ? 'text-[#163AC7]' : 'text-[#64748B] hover:text-[#0B132B]'
                   }`}
                 >
                   <FolderPlus className="w-4 h-4" />
@@ -144,15 +155,15 @@ export const Dashboard: React.FC<DashboardProps> = ({
 
               {/* Tab 1 Content: Mount Gate */}
               {activeTab === 'mount' && (
-                <div className="space-y-5">
+                <div className="space-y-5 animate-in fade-in duration-200">
                   <div
                     onDragOver={handleDragOver}
                     onDragLeave={handleDragLeave}
                     onDrop={handleDrop}
                     onClick={() => fileInputRef.current?.click()}
-                    className={`rounded-2xl border-2 border-dashed p-8 text-center cursor-pointer transition-all ${
+                    className={`rounded-2xl border-2 border-dashed p-8 text-center cursor-pointer transition-all duration-200 ${
                       isDragOver
-                        ? 'border-[#3B5BFF] bg-blue-50/80 ring-4 ring-blue-100'
+                        ? 'border-[#3B5BFF] bg-blue-50/90 ring-4 ring-blue-100/90 scale-[1.01] animate-drag-pulse shadow-lg shadow-blue-500/10'
                         : 'border-blue-200 hover:border-[#3B5BFF] bg-slate-50/60 hover:bg-slate-50'
                     }`}
                   >
@@ -163,7 +174,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
                       accept=".pdf,application/pdf"
                       className="hidden"
                     />
-                    <div className="w-12 h-12 rounded-2xl bg-[#EEF2FF] text-[#163AC7] flex items-center justify-center mx-auto mb-3">
+                    <div className="w-12 h-12 rounded-2xl bg-[#EEF2FF] text-[#163AC7] flex items-center justify-center mx-auto mb-3 group-hover:scale-105 transition-transform duration-200">
                       <FileUp className="w-6 h-6" />
                     </div>
                     <h4 className="font-bold text-base text-[#0B132B]">
@@ -181,10 +192,10 @@ export const Dashboard: React.FC<DashboardProps> = ({
                     <button
                       type="button"
                       onClick={() => fileInputRef.current?.click()}
-                      className="inline-flex items-center gap-3 rounded-full bg-[#3B5BFF] hover:bg-[#2745E8] pl-6 pr-2 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-900/20 transition-all min-h-[44px]"
+                      className="group/btn inline-flex items-center gap-3 rounded-full bg-[#3B5BFF] hover:bg-[#2745E8] active:scale-[0.97] pl-6 pr-2 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-900/20 transition-all duration-150 min-h-[44px]"
                     >
                       <span>Pilih Berkas PDF</span>
-                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#163AC7]">
+                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#163AC7] group-hover/btn:translate-x-1 transition-transform duration-200">
                         <ArrowRight className="h-4 w-4" />
                       </span>
                     </button>
@@ -194,7 +205,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
 
               {/* Tab 2 Content: Create Volume Quick Launcher */}
               {activeTab === 'create' && (
-                <div className="space-y-5">
+                <div className="space-y-5 animate-in fade-in duration-200">
                   <div className="rounded-2xl border border-slate-200/80 p-6 bg-slate-50/50 space-y-4">
                     <div className="flex items-start gap-3">
                       <div className="w-10 h-10 rounded-xl bg-[#EEF2FF] text-[#163AC7] flex items-center justify-center shrink-0">
@@ -227,20 +238,23 @@ export const Dashboard: React.FC<DashboardProps> = ({
                     <button
                       type="button"
                       onClick={onCreateVolumeClick}
-                      className="inline-flex items-center gap-3 rounded-full bg-[#3B5BFF] hover:bg-[#2745E8] pl-6 pr-2 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-900/20 transition-all min-h-[44px]"
+                      className="group/btn inline-flex items-center gap-3 rounded-full bg-[#3B5BFF] hover:bg-[#2745E8] active:scale-[0.97] pl-6 pr-2 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-900/20 transition-all duration-150 min-h-[44px]"
                     >
                       <span>Mulai Buat (.pdf)</span>
-                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#163AC7]">
+                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#163AC7] group-hover/btn:translate-x-1 transition-transform duration-200">
                         <ArrowRight className="h-4 w-4" />
                       </span>
                     </button>
                   </div>
                 </div>
               )}
-            </div>
+            </SpotlightCard>
 
-            {/* Card 3: Right Floating Frosted-Glass Card - Visualisasi Alur PDF */}
-            <div className="lg:col-span-3 rounded-3xl bg-white/10 backdrop-blur-md border border-white/20 p-6 text-white shadow-xl flex flex-col justify-between">
+            {/* Card 3: Right Floating Frosted-Glass Card - Visualisasi Alur PDF dengan Pipeline Flow */}
+            <SpotlightCard 
+              className="lg:col-span-3 rounded-3xl bg-white/10 backdrop-blur-md border border-white/20 p-6 text-white shadow-xl flex flex-col justify-between"
+              spotlightColor="rgba(255, 255, 255, 0.16)"
+            >
               <div>
                 <div className="flex items-center gap-2 mb-4">
                   <Layers className="w-5 h-5 text-sky-300" />
@@ -250,22 +264,34 @@ export const Dashboard: React.FC<DashboardProps> = ({
                 </div>
 
                 <div className="space-y-3 font-mono text-xs">
-                  <div className="p-3 rounded-2xl bg-black/20 border border-white/10">
-                    <span className="text-[10px] text-sky-300 block">1. Plaintext VFS</span>
+                  <div className="p-3 rounded-2xl bg-black/20 border border-white/10 group-hover:border-white/20 transition-colors">
+                    <span className="text-[10px] text-sky-300 block font-sans">1. Plaintext VFS</span>
                     <span className="font-semibold text-white">Memori ArrayBuffer</span>
                   </div>
-                  <div className="flex justify-center text-sky-300">
-                    <span>&darr; AES-256-GCM (310k)</span>
+                  
+                  {/* Animasi Alur Data 1 */}
+                  <div className="flex items-center justify-center gap-2 py-0.5">
+                    <svg className="w-3.5 h-5 text-sky-300 overflow-visible" viewBox="0 0 14 20" fill="none">
+                      <path d="M7 0 V16 M3 12 L7 17 L11 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="animate-pipeline-flow" />
+                    </svg>
+                    <span className="text-[10px] text-sky-200 font-mono">AES-256-GCM (310k)</span>
                   </div>
-                  <div className="p-3 rounded-2xl bg-black/20 border border-white/10">
-                    <span className="text-[10px] text-sky-300 block">2. Sampul PDF Valid</span>
+
+                  <div className="p-3 rounded-2xl bg-black/20 border border-white/10 group-hover:border-white/20 transition-colors">
+                    <span className="text-[10px] text-sky-300 block font-sans">2. Sampul PDF Valid</span>
                     <span className="font-semibold text-white">Trailer Biner O(1)</span>
                   </div>
-                  <div className="flex justify-center text-sky-300">
-                    <span>&darr; Anti-Tamper Tag</span>
+
+                  {/* Animasi Alur Data 2 */}
+                  <div className="flex items-center justify-center gap-2 py-0.5">
+                    <svg className="w-3.5 h-5 text-sky-300 overflow-visible" viewBox="0 0 14 20" fill="none">
+                      <path d="M7 0 V16 M3 12 L7 17 L11 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="animate-pipeline-flow" />
+                    </svg>
+                    <span className="text-[10px] text-sky-200 font-mono">Anti-Tamper Tag</span>
                   </div>
-                  <div className="p-3 rounded-2xl bg-blue-950/60 border border-sky-400/30">
-                    <span className="text-[10px] text-sky-300 block">3. Dokumen Hasil</span>
+
+                  <div className="p-3 rounded-2xl bg-blue-950/60 border border-sky-400/30 group-hover:border-sky-400/60 transition-colors shadow-sm">
+                    <span className="text-[10px] text-sky-300 block font-sans">3. Dokumen Hasil</span>
                     <span className="font-semibold text-emerald-300">StegoVault .PDF</span>
                   </div>
                 </div>
@@ -275,18 +301,18 @@ export const Dashboard: React.FC<DashboardProps> = ({
                 <button
                   type="button"
                   onClick={onOpenBenchmark}
-                  className="w-full min-h-[44px] flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-semibold text-white transition border border-white/15"
+                  className="w-full min-h-[44px] flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 active:scale-[0.98] text-xs font-semibold text-white transition-all duration-150 border border-white/15"
                 >
                   <Zap className="w-3.5 h-3.5 text-sky-300" />
                   <span>Uji Metrik Kripto &rarr;</span>
                 </button>
               </div>
-            </div>
+            </SpotlightCard>
           </div>
         </div>
       </section>
 
-      {/* Zona Bawah: Ice-White Canvas (#F4F6FA) - Grid 4 Pilar Keamanan */}
+      {/* Zona Bawah: Ice-White Canvas (#F4F6FA) - Grid 4 Pilar Keamanan dengan Spotlight */}
       <section className="bg-[#F4F6FA] pt-16 pb-8 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto space-y-12">
           <div className="text-center space-y-2">
@@ -302,10 +328,13 @@ export const Dashboard: React.FC<DashboardProps> = ({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* Kartu 1: Active Highlight Card (Cobalt Gradient) */}
-            <div className="rounded-3xl bg-gradient-to-b from-[#0A1F8F] to-[#1738CF] p-7 text-white shadow-xl flex flex-col justify-between">
+            {/* Kartu 1: Active Highlight Card (Cobalt Gradient) dengan White Spotlight */}
+            <SpotlightCard 
+              className="rounded-3xl bg-gradient-to-b from-[#0A1F8F] to-[#1738CF] p-7 text-white shadow-xl flex flex-col justify-between"
+              spotlightColor="rgba(255, 255, 255, 0.2)"
+            >
               <div>
-                <div className="w-12 h-12 rounded-2xl bg-white/15 flex items-center justify-center mb-5 text-white">
+                <div className="w-12 h-12 rounded-2xl bg-white/15 flex items-center justify-center mb-5 text-white group-hover:scale-105 transition-transform duration-300">
                   <FileText className="w-6 h-6" />
                 </div>
                 <h3 className="font-bold text-lg mb-2 text-white">Kontainer PDF Anti-Hang</h3>
@@ -317,12 +346,15 @@ export const Dashboard: React.FC<DashboardProps> = ({
                 <CheckCircle2 className="w-3.5 h-3.5 text-sky-300" />
                 <span>%%EOF Boundary Safe</span>
               </div>
-            </div>
+            </SpotlightCard>
 
             {/* Kartu 2: White Card - 100% Client-Side Privacy */}
-            <div className="rounded-3xl bg-white border border-slate-200/80 p-7 shadow-sm hover:shadow-md transition-shadow text-[#0B132B] flex flex-col justify-between">
+            <SpotlightCard 
+              className="rounded-3xl bg-white border border-slate-200/80 p-7 shadow-sm hover:shadow-md text-[#0B132B] flex flex-col justify-between"
+              spotlightColor="rgba(59, 91, 255, 0.08)"
+            >
               <div>
-                <div className="w-12 h-12 rounded-2xl bg-[#EEF2FF] text-[#163AC7] flex items-center justify-center mb-5">
+                <div className="w-12 h-12 rounded-2xl bg-[#EEF2FF] text-[#163AC7] flex items-center justify-center mb-5 group-hover:scale-105 transition-transform duration-300">
                   <Cpu className="w-6 h-6" />
                 </div>
                 <h3 className="font-bold text-lg mb-2 text-[#0B132B]">100% Client-Side Privacy</h3>
@@ -334,12 +366,15 @@ export const Dashboard: React.FC<DashboardProps> = ({
                 <ShieldCheck className="w-3.5 h-3.5" />
                 <span>Standar OWASP PBKDF2</span>
               </div>
-            </div>
+            </SpotlightCard>
 
             {/* Kartu 3: White Card - Enkripsi Tetap AES-256-GCM */}
-            <div className="rounded-3xl bg-white border border-slate-200/80 p-7 shadow-sm hover:shadow-md transition-shadow text-[#0B132B] flex flex-col justify-between">
+            <SpotlightCard 
+              className="rounded-3xl bg-white border border-slate-200/80 p-7 shadow-sm hover:shadow-md text-[#0B132B] flex flex-col justify-between"
+              spotlightColor="rgba(59, 91, 255, 0.08)"
+            >
               <div>
-                <div className="w-12 h-12 rounded-2xl bg-[#EEF2FF] text-[#163AC7] flex items-center justify-center mb-5">
+                <div className="w-12 h-12 rounded-2xl bg-[#EEF2FF] text-[#163AC7] flex items-center justify-center mb-5 group-hover:scale-105 transition-transform duration-300">
                   <Lock className="w-6 h-6" />
                 </div>
                 <h3 className="font-bold text-lg mb-2 text-[#0B132B]">Enkripsi Tetap AES-256-GCM</h3>
@@ -351,12 +386,15 @@ export const Dashboard: React.FC<DashboardProps> = ({
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
                 <span>Tamper Detection 100%</span>
               </div>
-            </div>
+            </SpotlightCard>
 
             {/* Kartu 4: White Card - Ekstraksi Biner O(1) */}
-            <div className="rounded-3xl bg-white border border-slate-200/80 p-7 shadow-sm hover:shadow-md transition-shadow text-[#0B132B] flex flex-col justify-between">
+            <SpotlightCard 
+              className="rounded-3xl bg-white border border-slate-200/80 p-7 shadow-sm hover:shadow-md text-[#0B132B] flex flex-col justify-between"
+              spotlightColor="rgba(59, 91, 255, 0.08)"
+            >
               <div>
-                <div className="w-12 h-12 rounded-2xl bg-[#EEF2FF] text-[#163AC7] flex items-center justify-center mb-5">
+                <div className="w-12 h-12 rounded-2xl bg-[#EEF2FF] text-[#163AC7] flex items-center justify-center mb-5 group-hover:scale-105 transition-transform duration-300">
                   <Zap className="w-6 h-6" />
                 </div>
                 <h3 className="font-bold text-lg mb-2 text-[#0B132B]">Ekstraksi Biner O(1)</h3>
@@ -368,7 +406,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
                 <Zap className="w-3.5 h-3.5" />
                 <span>Trailer Jump O(1)</span>
               </div>
-            </div>
+            </SpotlightCard>
           </div>
         </div>
       </section>

@@ -152,7 +152,7 @@ export const VirtualDrive: React.FC<VirtualDriveProps> = ({
             onClick={() => fileInputRef.current?.click()}
             disabled={isUnmounting}
             aria-label="Tambah berkas baru ke brankas"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#3B5BFF] hover:bg-[#2745E8] text-xs font-semibold text-white shadow-md transition-all min-h-[44px]"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#3B5BFF] hover:bg-[#2745E8] active:scale-[0.97] text-xs font-semibold text-white shadow-md transition-all duration-150 min-h-[44px]"
           >
             <Upload className="w-4 h-4 text-white" />
             <span>+ Tambah Berkas</span>
@@ -163,7 +163,7 @@ export const VirtualDrive: React.FC<VirtualDriveProps> = ({
             onClick={() => onUnmount(true)}
             disabled={isUnmounting}
             aria-label="Simpan perubahan dan kunci brankas"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#EF4444] hover:bg-[#DC2626] text-xs font-semibold text-white shadow-md transition-all min-h-[44px] disabled:opacity-50"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#EF4444] hover:bg-[#DC2626] active:scale-[0.97] text-xs font-semibold text-white shadow-md transition-all duration-150 min-h-[44px] disabled:opacity-50"
           >
             {isUnmounting ? (
               <>
@@ -187,7 +187,7 @@ export const VirtualDrive: React.FC<VirtualDriveProps> = ({
         onDrop={handleDrop}
         className={`bg-white border rounded-3xl shadow-sm overflow-hidden transition-all duration-200 ${
           isDragOver 
-            ? 'border-[#3B5BFF] ring-2 ring-blue-100 bg-blue-50/20' 
+            ? 'border-[#3B5BFF] ring-4 ring-blue-100/90 scale-[1.005] animate-drag-pulse bg-blue-50/20 shadow-md' 
             : 'border-slate-200'
         }`}
       >

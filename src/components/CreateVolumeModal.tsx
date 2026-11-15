@@ -388,7 +388,7 @@ export const CreateVolumeModal: React.FC<CreateVolumeModalProps> = ({
               <button
                 type="submit"
                 disabled={isProcessing}
-                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#3B5BFF] hover:bg-[#2745E8] text-xs font-semibold text-white shadow-md transition disabled:opacity-50 min-h-[44px]"
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#3B5BFF] hover:bg-[#2745E8] active:scale-[0.97] text-xs font-semibold text-white shadow-md transition-all duration-150 disabled:opacity-50 min-h-[44px]"
               >
                 {isProcessing ? (
                   <>
