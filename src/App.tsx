@@ -139,14 +139,14 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F4F6FA] text-[#0B132B] flex flex-col font-sans selection:bg-[#3B5BFF] selection:text-white">
+    <div className={`min-h-screen ${currentScreen === 'dashboard' ? 'bg-[#03071E]' : 'bg-[#F4F6FA]'} text-[#0B132B] flex flex-col font-sans selection:bg-[#3B5BFF] selection:text-white`}>
       <Navbar
         onOpenBenchmark={() => setIsSecurityDrawerOpen(true)}
         activeScreen={currentScreen}
         volumeName={activeVolumeName}
       />
 
-      <main className="flex-1">
+      <main className={`flex-1 ${currentScreen === 'dashboard' ? '-mt-[72px]' : ''}`}>
         {currentScreen === 'dashboard' ? (
           <Dashboard
             onCreateVolumeClick={() => setIsCreateModalOpen(true)}
