@@ -8,7 +8,8 @@ import {
   ArrowRight,
   ShieldCheck, 
   CheckCircle2,
-  Cpu
+  Cpu,
+  X
 } from 'lucide-react';
 import { SpotlightCard } from './SpotlightCard.tsx';
 
@@ -25,6 +26,36 @@ export const Dashboard: React.FC<DashboardProps> = ({
   const [activeTab, setActiveTab] = useState<'mount' | 'create'>('mount');
   const [isDragOver, setIsDragOver] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Mobile Tutorial Modal State & Animation Handler
+  const [tutorialModal, setTutorialModal] = useState<'mount' | 'create' | null>(null);
+  const [isModalClosing, setIsModalClosing] = useState<boolean>(false);
+
+  const handleOpenTutorial = (mode: 'mount' | 'create') => {
+    setIsModalClosing(false);
+    setTutorialModal(mode);
+  };
+
+  const handleCloseTutorial = () => {
+    if (isModalClosing || !tutorialModal) return;
+    setIsModalClosing(true);
+    setTimeout(() => {
+      setTutorialModal(null);
+      setIsModalClosing(false);
+    }, 180);
+  };
+
+  // Escape key handler for Tutorial Modal
+  useEffect(() => {
+    if (!tutorialModal) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        handleCloseTutorial();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [tutorialModal, isModalClosing]);
 
   // Typewriter Loop State (StegoVault <-> Amankan Berkas Rahasia...)
   const [phraseIndex, setPhraseIndex] = useState<0 | 1>(0);
@@ -139,9 +170,9 @@ export const Dashboard: React.FC<DashboardProps> = ({
 
           {/* The 3-Card Vault Showcase with Spotlight Effect */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-6 items-stretch text-left">
-            {/* Card 1: Left Floating White Card - Panduan Buka Kontainer */}
+            {/* Card 1: Left Floating White Card - Panduan Buka Kontainer (Desktop Only) */}
             <SpotlightCard 
-              className={`lg:col-span-3 rounded-3xl bg-white p-6 sm:p-7 shadow-2xl flex flex-col justify-between border transition-all duration-300 ${
+              className={`hidden lg:flex lg:col-span-3 rounded-3xl bg-white p-6 sm:p-7 shadow-2xl flex-col justify-between border transition-all duration-300 ${
                 activeTab === 'mount' ? 'border-[#163AC7]/30 ring-1 ring-[#163AC7]/15' : 'border-slate-100'
               }`}
               spotlightColor="rgba(59, 91, 255, 0.08)"
@@ -200,11 +231,12 @@ export const Dashboard: React.FC<DashboardProps> = ({
               </div>
             </SpotlightCard>
 
-            {/* Card 2: Centerpiece Elevated White Card - Aksi Utama Buat / Mount */}
-            <SpotlightCard 
-              className="lg:col-span-6 rounded-[28px] bg-white p-6 sm:p-7 shadow-2xl border border-slate-100 flex flex-col justify-between"
-              spotlightColor="rgba(59, 91, 255, 0.08)"
-            >
+            {/* Centerpiece Column: Card 2 (Elevated White Card) + Mobile-Only Tutorial Buttons */}
+            <div className="lg:col-span-6 flex flex-col gap-4">
+              <SpotlightCard 
+                className="w-full flex-1 rounded-[28px] bg-white p-6 sm:p-7 shadow-2xl border border-slate-100 flex flex-col justify-between"
+                spotlightColor="rgba(59, 91, 255, 0.08)"
+              >
               {/* Gliding Segmented Pill Switcher */}
               <div className="relative flex items-center p-1.5 bg-[#F4F6FA] rounded-full border border-slate-200/80 mb-6">
                 <div 
@@ -329,13 +361,55 @@ export const Dashboard: React.FC<DashboardProps> = ({
               )}
             </SpotlightCard>
 
-            {/* Card 3: Right Floating Frosted-Glass Card - Panduan Buat Kontainer */}
-            <SpotlightCard 
-              className={`lg:col-span-3 rounded-3xl bg-white/10 backdrop-blur-md border p-6 sm:p-7 text-white shadow-xl flex flex-col justify-between transition-all duration-300 ${
-                activeTab === 'create' ? 'border-sky-400/50 ring-1 ring-sky-400/20' : 'border-white/20'
-              }`}
-              spotlightColor="rgba(255, 255, 255, 0.16)"
-            >
+            {/* Baris Khusus Mobile: 2 Kartu Tombol Tutorial Bersebelahan */}
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:hidden">
+              <button
+                type="button"
+                onClick={() => handleOpenTutorial('mount')}
+                aria-label="Buka panduan cara buka kontainer"
+                className="p-3.5 sm:p-4 rounded-2xl bg-white border border-slate-100 hover:border-blue-200/80 shadow-md text-[#0B132B] flex items-center gap-2.5 sm:gap-3 text-left active:scale-[0.97] transition-all duration-150 cursor-pointer min-h-[56px] group"
+              >
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#EEF2FF] text-[#163AC7] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                  <FileUp className="w-4 h-4 sm:w-5 sm:h-5" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <span className="text-[10px] font-bold font-mono tracking-wider text-[#163AC7] uppercase block">
+                    Panduan
+                  </span>
+                  <h4 className="text-xs sm:text-sm font-bold text-[#0B132B] truncate">
+                    Cara Buka
+                  </h4>
+                </div>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleOpenTutorial('create')}
+                aria-label="Buka panduan cara buat kontainer"
+                className="p-3.5 sm:p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/15 shadow-md text-white flex items-center gap-2.5 sm:gap-3 text-left active:scale-[0.97] transition-all duration-150 cursor-pointer min-h-[56px] group"
+              >
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white/15 text-sky-300 border border-white/20 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                  <FolderPlus className="w-4 h-4 sm:w-5 sm:h-5" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <span className="text-[10px] font-bold font-mono tracking-wider text-sky-300 uppercase block">
+                    Panduan
+                  </span>
+                  <h4 className="text-xs sm:text-sm font-bold text-white truncate">
+                    Cara Buat
+                  </h4>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          {/* Card 3: Right Floating Frosted-Glass Card - Panduan Buat Kontainer (Desktop Only) */}
+          <SpotlightCard 
+            className={`hidden lg:flex lg:col-span-3 rounded-3xl bg-white/10 backdrop-blur-md border p-6 sm:p-7 text-white shadow-xl flex-col justify-between transition-all duration-300 ${
+              activeTab === 'create' ? 'border-sky-400/50 ring-1 ring-sky-400/20' : 'border-white/20'
+            }`}
+            spotlightColor="rgba(255, 255, 255, 0.16)"
+          >
               <div className="flex items-center gap-3.5 mb-5">
                 <div className="w-11 h-11 rounded-2xl bg-white/15 text-sky-300 border border-white/20 flex items-center justify-center shrink-0 shadow-xs">
                   <FolderPlus className="w-5 h-5" />
@@ -488,6 +562,163 @@ export const Dashboard: React.FC<DashboardProps> = ({
           </div>
         </div>
       </section>
+
+      {/* Pop Up Modal Tutorial Mobile dengan Animasi Buka & Tutup */}
+      {tutorialModal && (
+        <div 
+          className={`fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#070B19]/80 backdrop-blur-md ${
+            isModalClosing ? 'animate-modal-backdrop-out' : 'animate-modal-backdrop-in'
+          }`}
+          onClick={handleCloseTutorial}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="tutorial-modal-title"
+        >
+          <div 
+            className={`w-full max-w-md max-h-[90vh] overflow-y-auto bg-white border border-slate-200 rounded-[28px] p-6 sm:p-7 shadow-2xl relative text-[#0B132B] ${
+              isModalClosing ? 'animate-modal-scale-out' : 'animate-modal-scale-in'
+            }`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Tombol Tutup X */}
+            <button
+              type="button"
+              onClick={handleCloseTutorial}
+              aria-label="Tutup jendela panduan"
+              className="absolute top-5 right-5 min-h-[44px] min-w-[44px] rounded-full bg-slate-100 hover:bg-slate-200 text-[#64748B] hover:text-[#0B132B] flex items-center justify-center transition border border-slate-200 active:scale-95"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            {tutorialModal === 'mount' ? (
+              <div>
+                {/* Header Panduan Buka */}
+                <div className="flex items-center gap-3.5 mb-5 pr-10">
+                  <div className="w-12 h-12 rounded-2xl bg-[#EEF2FF] text-[#163AC7] flex items-center justify-center shrink-0 shadow-xs">
+                    <FileUp className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-bold font-mono tracking-wider text-[#163AC7] uppercase block">
+                      Panduan Buka
+                    </span>
+                    <h3 id="tutorial-modal-title" className="text-lg font-bold text-[#0B132B] leading-tight">
+                      Cara Buka Kontainer
+                    </h3>
+                    <p className="text-xs text-[#64748B] mt-0.5">3 langkah mengakses brankas</p>
+                  </div>
+                </div>
+
+                {/* Steps Panduan Buka */}
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-[#F8FAFC] border border-slate-200/80">
+                    <div className="w-7 h-7 rounded-xl bg-[#163AC7] text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 shadow-xs">
+                      1
+                    </div>
+                    <div className="space-y-0.5">
+                      <p className="text-xs font-bold text-[#0B132B]">Pilih Berkas PDF</p>
+                      <p className="text-[11px] text-[#64748B] leading-relaxed">
+                        Tarik atau unggah dokumen PDF kontainer StegoVault ke dropzone tengah.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-[#F8FAFC] border border-slate-200/80">
+                    <div className="w-7 h-7 rounded-xl bg-[#163AC7] text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 shadow-xs">
+                      2
+                    </div>
+                    <div className="space-y-0.5">
+                      <p className="text-xs font-bold text-[#0B132B]">Ketik Kata Sandi</p>
+                      <p className="text-[11px] text-[#64748B] leading-relaxed">
+                        Masukkan Master Password untuk memvalidasi tag autentikasi GCM.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-[#F8FAFC] border border-slate-200/80">
+                    <div className="w-7 h-7 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 shadow-xs">
+                      3
+                    </div>
+                    <div className="space-y-0.5">
+                      <p className="text-xs font-bold text-[#0B132B]">Akses di Memori</p>
+                      <p className="text-[11px] text-[#64748B] leading-relaxed">
+                        Buka dan pratinjau berkas secara instan di RAM tanpa jejak disk.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div>
+                {/* Header Panduan Buat */}
+                <div className="flex items-center gap-3.5 mb-5 pr-10">
+                  <div className="w-12 h-12 rounded-2xl bg-[#EEF2FF] text-[#163AC7] flex items-center justify-center shrink-0 shadow-xs">
+                    <FolderPlus className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-bold font-mono tracking-wider text-[#163AC7] uppercase block">
+                      Panduan Buat
+                    </span>
+                    <h3 id="tutorial-modal-title" className="text-lg font-bold text-[#0B132B] leading-tight">
+                      Cara Buat Kontainer
+                    </h3>
+                    <p className="text-xs text-[#64748B] mt-0.5">3 langkah membuat brankas</p>
+                  </div>
+                </div>
+
+                {/* Steps Panduan Buat */}
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-[#F8FAFC] border border-slate-200/80">
+                    <div className="w-7 h-7 rounded-xl bg-[#163AC7] text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 shadow-xs">
+                      1
+                    </div>
+                    <div className="space-y-0.5">
+                      <p className="text-xs font-bold text-[#0B132B]">Nama & Kata Sandi</p>
+                      <p className="text-[11px] text-[#64748B] leading-relaxed">
+                        Tentukan nama kontainer dan masukkan password berkekuatan tinggi.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-[#F8FAFC] border border-slate-200/80">
+                    <div className="w-7 h-7 rounded-xl bg-[#163AC7] text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 shadow-xs">
+                      2
+                    </div>
+                    <div className="space-y-0.5">
+                      <p className="text-xs font-bold text-[#0B132B]">Entropi Gerakan Mouse</p>
+                      <p className="text-[11px] text-[#64748B] leading-relaxed">
+                        Gerakkan kursor untuk mengumpulkan keacakan fisik ala VeraCrypt.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-[#F8FAFC] border border-slate-200/80">
+                    <div className="w-7 h-7 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 shadow-xs">
+                      3
+                    </div>
+                    <div className="space-y-0.5">
+                      <p className="text-xs font-bold text-[#0B132B]">Unduh Berkas PDF</p>
+                      <p className="text-[11px] text-[#64748B] leading-relaxed">
+                        Simpan file PDF resmi yang menyamarkan payload terenkripsi di dalamnya.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Tombol Mengerti / Tutup */}
+            <div className="mt-6 pt-4 border-t border-slate-100">
+              <button
+                type="button"
+                onClick={handleCloseTutorial}
+                className="w-full min-h-[44px] flex items-center justify-center px-5 py-2.5 rounded-full bg-[#163AC7] hover:bg-[#0A1F8F] active:scale-[0.98] text-xs font-bold text-white transition-all shadow-md shadow-blue-900/10"
+              >
+                Mengerti
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
