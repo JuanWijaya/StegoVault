@@ -337,20 +337,20 @@ export const CreateVolumeModal: React.FC<CreateVolumeModalProps> = ({
             </div>
 
             {/* Action Buttons */}
-            <div className="pt-2 flex items-center justify-end gap-3">
+            <div className="pt-2 flex flex-col-reverse sm:flex-row items-center justify-end gap-2.5 sm:gap-3">
               <button
                 type="button"
                 onClick={onClose}
                 disabled={isProcessing}
-                className="min-h-[44px] px-5 py-2.5 rounded-full text-xs font-semibold text-[#64748B] hover:text-[#0B132B] transition"
+                className="w-full sm:w-auto min-h-[44px] px-5 py-2.5 rounded-full text-xs font-semibold text-[#64748B] hover:text-[#0B132B] transition text-center justify-center flex items-center"
               >
                 Batal
               </button>
               <button
                 type="submit"
                 disabled={isProcessing || !hybridSalt}
-                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#3B5BFF] hover:bg-[#2745E8] active:scale-[0.97] text-xs font-semibold text-white shadow-md transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
-                title={!hybridSalt ? 'Kumpulkan entropi gerakan kursor hingga 100% terlebih dahulu' : undefined}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-[#3B5BFF] hover:bg-[#2745E8] active:scale-[0.97] text-xs font-semibold text-white shadow-md transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
+                title={!hybridSalt ? 'Kumpulkan entropi fisik hingga 100% terlebih dahulu' : undefined}
               >
                 {isProcessing ? (
                   <>
@@ -360,7 +360,7 @@ export const CreateVolumeModal: React.FC<CreateVolumeModalProps> = ({
                 ) : (
                   <>
                     <Lock className="w-4 h-4" />
-                    <span>{hybridSalt ? 'Buat & Unduh Kontainer (.pdf)' : 'Kumpulkan Entropi Mouse'}</span>
+                    <span>{hybridSalt ? 'Buat & Unduh Kontainer (.pdf)' : 'Kumpulkan Entropi Fisik Dulu'}</span>
                     <ArrowRight className="w-4 h-4 ml-1" />
                   </>
                 )}

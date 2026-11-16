@@ -154,7 +154,7 @@ export const EntropyHarvester: React.FC<EntropyHarvesterProps> = ({
         <div className="flex items-center gap-2">
           <Sparkles className="w-4 h-4 text-sky-400" />
           <span className="text-xs font-bold text-white font-mono">
-            Pengumpul Entropi Fisik Mouse (Wajib)
+            Pengumpul Entropi Fisik (Wajib)
           </span>
         </div>
         <div className="flex items-center gap-2">
@@ -182,10 +182,10 @@ export const EntropyHarvester: React.FC<EntropyHarvesterProps> = ({
             {state.isComplete
               ? 'Entropi Fisik Terkumpul Penuh (100%)'
               : state.percentage >= 40
-              ? 'Bagus, terus gerakkan mouse secara acak...'
+              ? 'Bagus, terus gerakkan kursor atau usap kanvas...'
               : state.percentage > 0
               ? 'Mulai mengumpulkan keacakan fisik...'
-              : 'Gerakkan kursor terus-menerus di kanvas:'}
+              : 'Gerakkan kursor atau usap area kanvas:'}
           </span>
           <span className={`font-bold ${
             state.isComplete 
@@ -225,7 +225,7 @@ export const EntropyHarvester: React.FC<EntropyHarvesterProps> = ({
         {/* Overlay Prompt */}
         {!state.isComplete && state.percentage === 0 && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none text-slate-500 text-xs font-mono">
-            <span>Gerakkan kursor terus-menerus di area ini</span>
+            <span>Gerakkan kursor atau usap di area ini</span>
           </div>
         )}
 
@@ -240,10 +240,10 @@ export const EntropyHarvester: React.FC<EntropyHarvesterProps> = ({
       </div>
 
       {/* Educational Micro-Footnote */}
-      <div className="flex items-center justify-between text-[10px] text-slate-500">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1 sm:gap-0 text-[10px] text-slate-500">
         <span className="flex items-center gap-1">
-          <Cpu className="w-3 h-3 text-sky-400" />
-          <span>Sumber: Keacakan Gerak Tangan ⊕ CSPRNG Hardware</span>
+          <Cpu className="w-3 h-3 text-sky-400 shrink-0" />
+          <span>Sumber: Keacakan Fisik ⊕ CSPRNG Hardware</span>
         </span>
         <span className="font-mono text-sky-400">XOR Diffused SHA-256</span>
       </div>

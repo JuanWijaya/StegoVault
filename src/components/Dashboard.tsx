@@ -319,15 +319,15 @@ export const Dashboard: React.FC<DashboardProps> = ({
                 )}
 
                 {/* Bottom CTA Action Button */}
-                <div className="flex items-center justify-end pt-4 shrink-0">
+                <div className="flex items-center justify-center sm:justify-end pt-4 shrink-0">
                   {activeTab === 'mount' ? (
                     <button
                       type="button"
                       onClick={() => fileInputRef.current?.click()}
-                      className="group/btn inline-flex items-center gap-3 rounded-full bg-[#3B5BFF] hover:bg-[#2745E8] active:scale-[0.97] pl-6 pr-2 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-900/20 transition-all duration-150 min-h-[44px]"
+                      className="group/btn w-full sm:w-auto inline-flex items-center justify-center sm:justify-between gap-3 rounded-full bg-[#3B5BFF] hover:bg-[#2745E8] active:scale-[0.97] px-6 sm:pl-6 sm:pr-2 py-2.5 sm:py-2 text-sm font-semibold text-white shadow-lg shadow-blue-900/20 transition-all duration-150 min-h-[44px]"
                     >
                       <span>Pilih Berkas PDF</span>
-                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#163AC7] group-hover/btn:translate-x-1 transition-transform duration-200">
+                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#163AC7] group-hover/btn:translate-x-1 transition-transform duration-200 shrink-0">
                         <ArrowRight className="h-4 w-4" />
                       </span>
                     </button>
@@ -335,10 +335,10 @@ export const Dashboard: React.FC<DashboardProps> = ({
                     <button
                       type="button"
                       onClick={onCreateVolumeClick}
-                      className="group/btn inline-flex items-center gap-3 rounded-full bg-[#3B5BFF] hover:bg-[#2745E8] active:scale-[0.97] pl-6 pr-2 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-900/20 transition-all duration-150 min-h-[44px]"
+                      className="group/btn w-full sm:w-auto inline-flex items-center justify-center sm:justify-between gap-3 rounded-full bg-[#3B5BFF] hover:bg-[#2745E8] active:scale-[0.97] px-6 sm:pl-6 sm:pr-2 py-2.5 sm:py-2 text-sm font-semibold text-white shadow-lg shadow-blue-900/20 transition-all duration-150 min-h-[44px]"
                     >
                       <span>Mulai Buat (.pdf)</span>
-                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#163AC7] group-hover/btn:translate-x-1 transition-transform duration-200">
+                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#163AC7] group-hover/btn:translate-x-1 transition-transform duration-200 shrink-0">
                         <ArrowRight className="h-4 w-4" />
                       </span>
                     </button>
@@ -467,7 +467,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Kartu 1: Active Highlight Card (Cobalt Gradient) dengan White Spotlight */}
             <SpotlightCard 
-              className="rounded-3xl bg-gradient-to-b from-[#0A1F8F] to-[#1738CF] p-7 text-white shadow-xl flex flex-col justify-between"
+              className="rounded-3xl bg-gradient-to-b from-[#0A1F8F] to-[#1738CF] p-5 sm:p-7 text-white shadow-xl flex flex-col justify-between"
               spotlightColor="rgba(255, 255, 255, 0.2)"
             >
               <div>
@@ -487,7 +487,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
 
             {/* Kartu 2: White Card - 100% Client-Side Privacy */}
             <SpotlightCard 
-              className="rounded-3xl bg-white border border-slate-200/80 p-7 shadow-sm hover:shadow-md text-[#0B132B] flex flex-col justify-between"
+              className="rounded-3xl bg-white border border-slate-200/80 p-5 sm:p-7 shadow-sm hover:shadow-md text-[#0B132B] flex flex-col justify-between"
               spotlightColor="rgba(59, 91, 255, 0.08)"
             >
               <div>
@@ -507,7 +507,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
 
             {/* Kartu 3: White Card - Enkripsi Tetap AES-256-GCM */}
             <SpotlightCard 
-              className="rounded-3xl bg-white border border-slate-200/80 p-7 shadow-sm hover:shadow-md text-[#0B132B] flex flex-col justify-between"
+              className="rounded-3xl bg-white border border-slate-200/80 p-5 sm:p-7 shadow-sm hover:shadow-md text-[#0B132B] flex flex-col justify-between"
               spotlightColor="rgba(59, 91, 255, 0.08)"
             >
               <div>
@@ -527,7 +527,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
 
             {/* Kartu 4: White Card - Ekstraksi Biner O(1) */}
             <SpotlightCard 
-              className="rounded-3xl bg-white border border-slate-200/80 p-7 shadow-sm hover:shadow-md text-[#0B132B] flex flex-col justify-between"
+              className="rounded-3xl bg-white border border-slate-200/80 p-5 sm:p-7 shadow-sm hover:shadow-md text-[#0B132B] flex flex-col justify-between"
               spotlightColor="rgba(59, 91, 255, 0.08)"
             >
               <div>

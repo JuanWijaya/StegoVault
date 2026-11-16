@@ -195,12 +195,12 @@ export const MountGateModal: React.FC<MountGateModalProps> = ({
           )}
 
           {/* Action Buttons */}
-          <div className="pt-2 flex items-center justify-end gap-3">
+          <div className="pt-2 flex flex-col-reverse sm:flex-row items-center justify-end gap-2.5 sm:gap-3">
             <button
               type="button"
               onClick={onClose}
               disabled={isMounting}
-              className="min-h-[44px] px-5 py-2.5 rounded-full text-xs font-semibold text-[#64748B] hover:text-[#0B132B] transition"
+              className="w-full sm:w-auto min-h-[44px] px-5 py-2.5 rounded-full text-xs font-semibold text-[#64748B] hover:text-[#0B132B] transition text-center justify-center flex items-center"
             >
               Tutup
             </button>
@@ -208,7 +208,7 @@ export const MountGateModal: React.FC<MountGateModalProps> = ({
               <button
                 type="submit"
                 disabled={isMounting || !password}
-                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#3B5BFF] hover:bg-[#2745E8] active:scale-[0.97] text-xs font-semibold text-white shadow-md transition-all duration-150 disabled:opacity-50 min-h-[44px]"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-[#3B5BFF] hover:bg-[#2745E8] active:scale-[0.97] text-xs font-semibold text-white shadow-md transition-all duration-150 disabled:opacity-50 min-h-[44px]"
               >
                 {isMounting ? (
                   <>

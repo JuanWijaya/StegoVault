@@ -96,22 +96,22 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Top Header Toolbar */}
-        <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
-          <div className="flex items-center gap-3 overflow-hidden">
-            <div className="w-10 h-10 rounded-xl bg-[#EEF2FF] flex items-center justify-center text-[#163AC7] shrink-0">
-              {isImage ? <ImageIcon className="w-5 h-5 text-purple-600" /> : isPdf ? <FileText className="w-5 h-5 text-[#163AC7]" /> : isText ? <Code className="w-5 h-5 text-emerald-600" /> : <File className="w-5 h-5 text-slate-500" />}
+        <div className="px-4 sm:px-6 py-3.5 sm:py-4 border-b border-slate-100 flex items-center justify-between gap-3 bg-slate-50/70">
+          <div className="flex items-center gap-2.5 sm:gap-3 overflow-hidden min-w-0">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#EEF2FF] flex items-center justify-center text-[#163AC7] shrink-0">
+              {isImage ? <ImageIcon className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" /> : isPdf ? <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-[#163AC7]" /> : isText ? <Code className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600" /> : <File className="w-4 h-4 sm:w-5 sm:h-5 text-slate-500" />}
             </div>
-            <div className="overflow-hidden">
-              <h3 className="text-sm font-bold text-[#0B132B] truncate">{file.name}</h3>
-              <p className="text-xs font-mono text-[#64748B]">
+            <div className="overflow-hidden min-w-0">
+              <h3 className="text-xs sm:text-sm font-bold text-[#0B132B] truncate">{file.name}</h3>
+              <p className="text-[11px] sm:text-xs font-mono text-[#64748B]">
                 {formatBytes(file.size)}
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             {isImage && (
-              <div className="flex items-center gap-1 bg-slate-100 rounded-xl p-1 border border-slate-200 mr-1">
+              <div className="hidden sm:flex items-center gap-1 bg-slate-100 rounded-xl p-1 border border-slate-200 mr-1">
                 <button
                   type="button"
                   onClick={() => setZoomLevel(prev => Math.max(0.5, prev - 0.25))}
@@ -140,11 +140,11 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
               type="button"
               onClick={() => onExport(file)}
               aria-label={`Ekspor berkas ${file.name}`}
-              className="min-h-[44px] flex items-center gap-1.5 px-4 py-2 rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-semibold text-[#0B132B] transition"
+              className="min-h-[44px] min-w-[44px] flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2 rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-semibold text-[#0B132B] transition"
               title="Unduh berkas keluar dari brankas"
             >
               <Download className="w-4 h-4 text-[#163AC7]" />
-              <span>Ekspor</span>
+              <span className="hidden sm:inline">Ekspor</span>
             </button>
 
             <button
@@ -159,15 +159,36 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
         </div>
 
         {/* Content Viewer Body */}
-        <div className="flex-1 overflow-auto p-6 bg-[#F4F6FA] flex items-center justify-center min-h-[350px]">
+        <div className="flex-1 overflow-auto p-4 sm:p-6 bg-[#F4F6FA] flex items-center justify-center min-h-[350px]">
           {isImage && blobUrl && (
-            <div className="overflow-auto max-h-[70vh] flex items-center justify-center">
+            <div className="relative overflow-auto max-h-[70vh] flex items-center justify-center w-full">
               <img 
                 src={blobUrl} 
                 alt={file.name} 
                 style={{ transform: `scale(${zoomLevel})`, transformOrigin: 'center center' }}
                 className="max-h-[65vh] object-contain rounded-xl shadow-lg transition-transform duration-200 bg-white"
               />
+              <div className="sm:hidden absolute bottom-3 right-3 flex items-center gap-1 bg-white/90 backdrop-blur-md rounded-full p-1 border border-slate-200 shadow-md">
+                <button
+                  type="button"
+                  onClick={() => setZoomLevel(prev => Math.max(0.5, prev - 0.25))}
+                  aria-label="Perkecil tampilan gambar"
+                  className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full hover:bg-slate-100 text-[#64748B]"
+                >
+                  <ZoomOut className="w-4 h-4" />
+                </button>
+                <span className="text-[10px] font-mono px-1 text-[#0B132B] font-semibold">
+                  {Math.round(zoomLevel * 100)}%
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setZoomLevel(prev => Math.min(3, prev + 0.25))}
+                  aria-label="Perbesar tampilan gambar"
+                  className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full hover:bg-slate-100 text-[#0B132B]"
+                >
+                  <ZoomIn className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           )}
 
@@ -211,9 +232,9 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-3 bg-white border-t border-slate-100 flex items-center justify-between text-[11px] text-[#64748B]">
+        <div className="px-4 sm:px-6 py-2.5 sm:py-3 bg-white border-t border-slate-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1 sm:gap-0 text-[11px] text-[#64748B]">
           <span>MIME: <code className="text-[#0B132B] font-mono">{file.mimeType}</code></span>
-          <span className="font-mono text-emerald-600 font-medium">RAM Hygiene Protected • Auto-Revoke on Close</span>
+          <span className="font-mono text-emerald-600 font-medium">RAM Protected (Auto-Revoke)</span>
         </div>
       </div>
     </div>

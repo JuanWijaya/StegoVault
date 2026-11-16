@@ -146,13 +146,13 @@ export const VirtualDrive: React.FC<VirtualDriveProps> = ({
         </div>
 
         {/* Action Buttons: Back, Add File & Unmount */}
-        <div className="flex flex-wrap items-center gap-3 w-full md:w-auto justify-start sm:justify-end">
+        <div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-2.5 sm:gap-3 w-full md:w-auto">
           <button
             type="button"
             onClick={() => onUnmount(false)}
             disabled={isUnmounting}
             aria-label="Kembali ke beranda"
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/10 hover:bg-white/20 active:scale-[0.97] text-xs font-semibold text-white border border-white/20 shadow-sm transition-all duration-150 min-h-[44px]"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-white/10 hover:bg-white/20 active:scale-[0.97] text-xs font-semibold text-white border border-white/20 shadow-sm transition-all duration-150 min-h-[44px]"
             title="Kembali ke beranda tanpa menyimpan perubahan"
           >
             <ArrowLeft className="w-4 h-4 text-sky-200" />
@@ -166,36 +166,38 @@ export const VirtualDrive: React.FC<VirtualDriveProps> = ({
             multiple
             className="hidden"
           />
-          <button
-            type="button"
-            onClick={() => fileInputRef.current?.click()}
-            disabled={isUnmounting}
-            aria-label="Tambah berkas baru ke brankas"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#3B5BFF] hover:bg-[#2745E8] active:scale-[0.97] text-xs font-semibold text-white shadow-md transition-all duration-150 min-h-[44px]"
-          >
-            <Upload className="w-4 h-4 text-white" />
-            <span>+ Tambah Berkas</span>
-          </button>
+          <div className="grid grid-cols-2 sm:flex sm:items-center gap-2.5 sm:gap-3 w-full sm:w-auto">
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={isUnmounting}
+              aria-label="Tambah berkas baru ke brankas"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 rounded-full bg-[#3B5BFF] hover:bg-[#2745E8] active:scale-[0.97] text-xs font-semibold text-white shadow-md transition-all duration-150 min-h-[44px]"
+            >
+              <Upload className="w-4 h-4 text-white" />
+              <span>+ Tambah Berkas</span>
+            </button>
 
-          <button
-            type="button"
-            onClick={() => onUnmount(true)}
-            disabled={isUnmounting}
-            aria-label="Simpan perubahan dan kunci brankas"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#EF4444] hover:bg-[#DC2626] active:scale-[0.97] text-xs font-semibold text-white shadow-md transition-all duration-150 min-h-[44px] disabled:opacity-50"
-          >
-            {isUnmounting ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                <span>Membungkus Ulang PDF...</span>
-              </>
-            ) : (
-              <>
-                <Save className="w-4 h-4" />
-                <span>Simpan &amp; Unmount</span>
-              </>
-            )}
-          </button>
+            <button
+              type="button"
+              onClick={() => onUnmount(true)}
+              disabled={isUnmounting}
+              aria-label="Simpan perubahan dan kunci brankas"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 rounded-full bg-[#EF4444] hover:bg-[#DC2626] active:scale-[0.97] text-xs font-semibold text-white shadow-md transition-all duration-150 min-h-[44px] disabled:opacity-50"
+            >
+              {isUnmounting ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>Membungkus...</span>
+                </>
+              ) : (
+                <>
+                  <Save className="w-4 h-4" />
+                  <span>Simpan &amp; Unmount</span>
+                </>
+              )}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -211,7 +213,7 @@ export const VirtualDrive: React.FC<VirtualDriveProps> = ({
         }`}
       >
         {/* Search & Stats Bar */}
-        <div className="px-6 py-4 border-b border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4 bg-slate-50/50">
+        <div className="px-4 sm:px-6 py-4 border-b border-slate-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 bg-slate-50/50">
           <div className="relative w-full sm:w-80">
             <Search className="w-4 h-4 text-[#64748B] absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
@@ -385,8 +387,9 @@ export const VirtualDrive: React.FC<VirtualDriveProps> = ({
         )}
 
         {/* Drag Hint Footer */}
-        <div className="px-6 py-3 bg-slate-50/80 border-t border-slate-100 text-center text-xs text-[#64748B]">
-          <span>Tarik dan lepas berkas langsung ke area ini untuk menambahkannya ke brankas.</span>
+        <div className="px-4 sm:px-6 py-3 bg-slate-50/80 border-t border-slate-100 text-center text-xs text-[#64748B]">
+          <span className="hidden sm:inline">Tarik dan lepas berkas langsung ke area ini untuk menambahkannya ke brankas.</span>
+          <span className="sm:hidden">Gunakan tombol <span className="font-semibold text-[#163AC7]">+ Tambah Berkas</span> di atas untuk memilih berkas dari perangkat Anda.</span>
         </div>
       </div>
 
