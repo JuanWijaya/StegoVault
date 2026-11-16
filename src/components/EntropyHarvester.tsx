@@ -34,7 +34,7 @@ export const EntropyHarvester: React.FC<EntropyHarvesterProps> = ({
 
   const [state, setState] = useState<EntropyState>({
     samplesCount: 0,
-    maxSamples: 128,
+    maxSamples: 350,
     percentage: 0,
     isComplete: false,
     collectedBits: 0,
@@ -154,7 +154,7 @@ export const EntropyHarvester: React.FC<EntropyHarvesterProps> = ({
         <div className="flex items-center gap-2">
           <Sparkles className="w-4 h-4 text-sky-400" />
           <span className="text-xs font-bold text-white font-mono">
-            Pengumpul Entropi Fisik (VeraCrypt Mode)
+            Pengumpul Entropi Fisik Mouse (Wajib)
           </span>
         </div>
         <div className="flex items-center gap-2">
@@ -175,17 +175,25 @@ export const EntropyHarvester: React.FC<EntropyHarvesterProps> = ({
         </div>
       </div>
 
-      {/* Progress Bar */}
+      {/* Progress Bar Dinamis (Amber -> Sky -> Emerald) */}
       <div className="space-y-1">
         <div className="flex items-center justify-between text-[10px] font-mono">
           <span className="text-slate-400">
             {state.isComplete
-              ? 'Entropi Hibrida Siap (100%)'
+              ? 'Entropi Fisik Terkumpul Penuh (100%)'
+              : state.percentage >= 40
+              ? 'Bagus, terus gerakkan mouse secara acak...'
               : state.percentage > 0
-              ? 'Mengumpulkan keacakan gerakan fisik...'
-              : 'Gerakkan mouse Anda di dalam kotak di bawah:'}
+              ? 'Mulai mengumpulkan keacakan fisik...'
+              : 'Gerakkan kursor terus-menerus di kanvas:'}
           </span>
-          <span className={`font-bold ${state.isComplete ? 'text-emerald-400' : 'text-sky-400'}`}>
+          <span className={`font-bold ${
+            state.isComplete 
+              ? 'text-emerald-400' 
+              : state.percentage >= 40 
+              ? 'text-sky-400' 
+              : 'text-amber-400'
+          }`}>
             {state.percentage}%
           </span>
         </div>
@@ -193,8 +201,10 @@ export const EntropyHarvester: React.FC<EntropyHarvesterProps> = ({
           <div
             className={`h-full transition-all duration-150 rounded-full ${
               state.isComplete
-                ? 'bg-gradient-to-r from-emerald-400 to-teal-300 shadow-glow-emerald'
-                : 'bg-gradient-to-r from-blue-600 via-sky-400 to-cyan-300'
+                ? 'bg-gradient-to-r from-emerald-500 to-teal-300 shadow-glow-emerald'
+                : state.percentage >= 40
+                ? 'bg-gradient-to-r from-blue-600 via-sky-400 to-cyan-300'
+                : 'bg-gradient-to-r from-amber-600 via-amber-500 to-orange-400'
             }`}
             style={{ width: `${state.percentage}%` }}
           />
@@ -215,7 +225,7 @@ export const EntropyHarvester: React.FC<EntropyHarvesterProps> = ({
         {/* Overlay Prompt */}
         {!state.isComplete && state.percentage === 0 && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none text-slate-500 text-xs font-mono">
-            <span>Tarik / gerakkan kursor di area ini</span>
+            <span>Gerakkan kursor terus-menerus di area ini</span>
           </div>
         )}
 

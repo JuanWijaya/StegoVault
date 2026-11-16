@@ -9,8 +9,7 @@ import {
   ArrowRight, 
   Loader2, 
   CheckCircle2, 
-  AlertCircle,
-  Sparkles
+  AlertCircle
 } from 'lucide-react';
 import { sealVaultToPdf } from '../utils/container.ts';
 import { SealVaultResult } from '../types/container.ts';
@@ -35,9 +34,20 @@ export const CreateVolumeModal: React.FC<CreateVolumeModalProps> = ({
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successResult, setSuccessResult] = useState<SealVaultResult | null>(null);
 
-  const [useEntropyHarvester, setUseEntropyHarvester] = useState(false);
   const [hybridSalt, setHybridSalt] = useState<Uint8Array | null>(null);
   const [hybridIV, setHybridIV] = useState<Uint8Array | null>(null);
+
+  // Reset state saat modal dibuka
+  useEffect(() => {
+    if (isOpen) {
+      setPassword('');
+      setConfirmPassword('');
+      setErrorMsg(null);
+      setSuccessResult(null);
+      setHybridSalt(null);
+      setHybridIV(null);
+    }
+  }, [isOpen]);
 
   // Modal Escape key down handler (R-32)
   useEffect(() => {
@@ -99,8 +109,8 @@ export const CreateVolumeModal: React.FC<CreateVolumeModalProps> = ({
       return;
     }
 
-    if (useEntropyHarvester && !hybridSalt) {
-      setErrorMsg('Mode VeraCrypt Aktif: Silakan gerakkan mouse di kanvas hingga entropi 100% terkumpul.');
+    if (!hybridSalt || !hybridIV) {
+      setErrorMsg('Entropi Fisik Wajib: Silakan gerakkan kursor di area kanvas hingga 100% penuh.');
       return;
     }
 
@@ -110,8 +120,8 @@ export const CreateVolumeModal: React.FC<CreateVolumeModalProps> = ({
         cleanName, 
         [], 
         password, 
-        hybridSalt || undefined, 
-        hybridIV || undefined
+        hybridSalt, 
+        hybridIV
       );
 
       const blob = new Blob([result.pdfBytes.buffer as ArrayBuffer], { type: 'application/pdf' });
@@ -178,7 +188,7 @@ export const CreateVolumeModal: React.FC<CreateVolumeModalProps> = ({
               <div>
                 <span className="text-[#64748B] block">Sumber Entropi:</span>
                 <span className="text-emerald-600 font-bold">
-                  {hybridSalt ? 'Hibrida (CSPRNG + Human)' : 'CSPRNG Hardware'}
+                  Hibrida (CSPRNG + Fisik)
                 </span>
               </div>
               <div>
@@ -304,61 +314,18 @@ export const CreateVolumeModal: React.FC<CreateVolumeModalProps> = ({
               />
             </div>
 
-            {/* Toggle VeraCrypt Mode: Entropi Fisik Gerakan Mouse */}
-            <div className="pt-1 space-y-3">
-              <div className="flex items-center justify-between p-3.5 rounded-2xl bg-[#F4F6FA] border border-slate-200 hover:border-[#3B5BFF]/30 transition">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-xl bg-[#EEF2FF] text-[#163AC7] flex items-center justify-center">
-                    <Sparkles className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <span className="text-xs font-bold text-[#0B132B] block">
-                      Mode VeraCrypt (Entropi Mouse)
-                    </span>
-                    <span className="text-[10px] text-[#64748B] block">
-                      Tingkatkan keacakan kunci dengan gerakan kursor mouse
-                    </span>
-                  </div>
-                </div>
-
-                <button
-                  type="button"
-                  role="switch"
-                  aria-checked={useEntropyHarvester}
-                  aria-label="Aktifkan Mode VeraCrypt untuk Entropi Fisik Gerakan Mouse"
-                  onClick={() => {
-                    setUseEntropyHarvester(!useEntropyHarvester);
-                    setHybridSalt(null);
-                    setHybridIV(null);
-                  }}
-                  className={`min-h-[44px] min-w-[44px] flex items-center justify-center`}
-                >
-                  <div className={`w-11 h-6 flex items-center rounded-full p-1 transition-colors ${
-                    useEntropyHarvester ? 'bg-[#3B5BFF]' : 'bg-slate-300'
-                  }`}>
-                    <div 
-                      className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform ${
-                        useEntropyHarvester ? 'translate-x-5' : 'translate-x-0'
-                      }`} 
-                    />
-                  </div>
-                </button>
-              </div>
-
-              {useEntropyHarvester && (
-                <div className="animate-in fade-in zoom-in-95 duration-200">
-                  <EntropyHarvester
-                    onEntropyReady={(salt, iv) => {
-                      setHybridSalt(salt);
-                      setHybridIV(iv);
-                    }}
-                    onReset={() => {
-                      setHybridSalt(null);
-                      setHybridIV(null);
-                    }}
-                  />
-                </div>
-              )}
+            {/* Entropi Fisik Gerakan Mouse (Wajib) */}
+            <div className="pt-1">
+              <EntropyHarvester
+                onEntropyReady={(salt, iv) => {
+                  setHybridSalt(salt);
+                  setHybridIV(iv);
+                }}
+                onReset={() => {
+                  setHybridSalt(null);
+                  setHybridIV(null);
+                }}
+              />
             </div>
 
             {/* Security Guarantee Note */}
@@ -381,8 +348,9 @@ export const CreateVolumeModal: React.FC<CreateVolumeModalProps> = ({
               </button>
               <button
                 type="submit"
-                disabled={isProcessing}
-                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#3B5BFF] hover:bg-[#2745E8] active:scale-[0.97] text-xs font-semibold text-white shadow-md transition-all duration-150 disabled:opacity-50 min-h-[44px]"
+                disabled={isProcessing || !hybridSalt}
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#3B5BFF] hover:bg-[#2745E8] active:scale-[0.97] text-xs font-semibold text-white shadow-md transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
+                title={!hybridSalt ? 'Kumpulkan entropi gerakan kursor hingga 100% terlebih dahulu' : undefined}
               >
                 {isProcessing ? (
                   <>
@@ -392,7 +360,7 @@ export const CreateVolumeModal: React.FC<CreateVolumeModalProps> = ({
                 ) : (
                   <>
                     <Lock className="w-4 h-4" />
-                    <span>Buat &amp; Unduh Kontainer (.pdf)</span>
+                    <span>{hybridSalt ? 'Buat & Unduh Kontainer (.pdf)' : 'Kumpulkan Entropi Mouse'}</span>
                     <ArrowRight className="w-4 h-4 ml-1" />
                   </>
                 )}

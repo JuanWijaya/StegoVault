@@ -234,95 +234,92 @@ export const Dashboard: React.FC<DashboardProps> = ({
             {/* Centerpiece Column: Card 2 (Elevated White Card) + Mobile-Only Tutorial Buttons */}
             <div className="lg:col-span-6 flex flex-col gap-4">
               <SpotlightCard 
-                className="w-full flex-1 rounded-[28px] bg-white p-6 sm:p-7 shadow-2xl border border-slate-100 flex flex-col justify-between"
+                className="w-full flex-1 rounded-[28px] bg-white p-6 sm:p-7 shadow-2xl border border-slate-100 flex flex-col"
                 spotlightColor="rgba(59, 91, 255, 0.08)"
               >
-                <div className="space-y-4">
-                  {/* Gliding Segmented Pill Switcher */}
-                  <div className="relative flex items-center p-1.5 bg-[#F4F6FA] rounded-full border border-slate-200/80">
-                    <div 
-                      className={`absolute top-1.5 bottom-1.5 rounded-full bg-white shadow-sm transition-all duration-300 ease-out z-0 ${
-                        activeTab === 'mount' 
-                          ? 'left-1.5 w-[calc(50%-6px)]' 
-                          : 'left-[calc(50%+3px)] w-[calc(50%-6px)]'
-                      }`}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setActiveTab('mount')}
-                      aria-label="Pilih mode buka kontainer"
-                      className={`relative z-10 flex-1 min-h-[44px] flex items-center justify-center gap-2 rounded-full text-xs font-bold transition-colors duration-200 ${
-                        activeTab === 'mount' ? 'text-[#163AC7]' : 'text-[#64748B] hover:text-[#0B132B]'
-                      }`}
-                    >
-                      <FileUp className="w-4 h-4" />
-                      <span>Buka Kontainer (.pdf)</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setActiveTab('create')}
-                      aria-label="Pilih mode buat kontainer baru"
-                      className={`relative z-10 flex-1 min-h-[44px] flex items-center justify-center gap-2 rounded-full text-xs font-bold transition-colors duration-200 ${
-                        activeTab === 'create' ? 'text-[#163AC7]' : 'text-[#64748B] hover:text-[#0B132B]'
-                      }`}
-                    >
-                      <FolderPlus className="w-4 h-4" />
-                      <span>Buat Kontainer Baru</span>
-                    </button>
-                  </div>
-
-                  {/* Tab 1 Content: Mount Gate Dropzone */}
-                  {activeTab === 'mount' && (
-                    <div
-                      onDragOver={handleDragOver}
-                      onDragLeave={handleDragLeave}
-                      onDrop={handleDrop}
-                      onClick={() => fileInputRef.current?.click()}
-                      className={`rounded-2xl border-2 border-dashed p-7 text-center cursor-pointer transition-all duration-200 ${
-                        isDragOver
-                          ? 'border-[#3B5BFF] bg-blue-50/90 ring-4 ring-blue-100/90 scale-[1.01] animate-drag-pulse shadow-lg shadow-blue-500/10'
-                          : 'border-blue-200 hover:border-[#3B5BFF] bg-slate-50/60 hover:bg-slate-50'
-                      }`}
-                    >
-                      <input
-                        type="file"
-                        ref={fileInputRef}
-                        onChange={handleFileChange}
-                        accept=".pdf,application/pdf"
-                        className="hidden"
-                      />
-                      <div className="w-12 h-12 rounded-2xl bg-[#EEF2FF] text-[#163AC7] flex items-center justify-center mx-auto mb-3 group-hover:scale-105 transition-transform duration-200">
-                        <FileUp className="w-6 h-6" />
-                      </div>
-                      <h4 className="font-bold text-base text-[#0B132B]">
-                        {isDragOver ? 'Lepaskan Berkas PDF Sekarang' : 'Tarik Berkas PDF Kontainer ke Sini'}
-                      </h4>
-                      <p className="text-xs text-[#64748B] mt-1 max-w-sm mx-auto">
-                        Atau klik untuk memilih berkas PDF dari komputer Anda.
-                      </p>
-                    </div>
-                  )}
-
-                  {/* Tab 2 Content: Create Volume Quick Launcher */}
-                  {activeTab === 'create' && (
-                    <div className="rounded-2xl border border-slate-200/80 p-6 bg-slate-50/50">
-                      <div className="flex items-start gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-[#EEF2FF] text-[#163AC7] flex items-center justify-center shrink-0">
-                          <FolderPlus className="w-5 h-5" />
-                        </div>
-                        <div>
-                          <h4 className="font-bold text-base text-[#0B132B]">Buat Brankas Kontainer Baru</h4>
-                          <p className="text-xs text-[#64748B] mt-1 leading-relaxed">
-                            Amankan dokumen penting Anda di dalam berkas PDF bertopeng yang dilindungi kata sandi.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
+                {/* Gliding Segmented Pill Switcher */}
+                <div className="relative flex items-center p-1.5 bg-[#F4F6FA] rounded-full border border-slate-200/80 mb-4 shrink-0">
+                  <div 
+                    className={`absolute top-1.5 bottom-1.5 rounded-full bg-white shadow-sm transition-all duration-300 ease-out z-0 ${
+                      activeTab === 'mount' 
+                        ? 'left-1.5 w-[calc(50%-6px)]' 
+                        : 'left-[calc(50%+3px)] w-[calc(50%-6px)]'
+                    }`}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab('mount')}
+                    aria-label="Pilih mode buka kontainer"
+                    className={`relative z-10 flex-1 min-h-[44px] flex items-center justify-center gap-2 rounded-full text-xs font-bold transition-colors duration-200 ${
+                      activeTab === 'mount' ? 'text-[#163AC7]' : 'text-[#64748B] hover:text-[#0B132B]'
+                    }`}
+                  >
+                    <FileUp className="w-4 h-4" />
+                    <span>Buka Kontainer (.pdf)</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab('create')}
+                    aria-label="Pilih mode buat kontainer baru"
+                    className={`relative z-10 flex-1 min-h-[44px] flex items-center justify-center gap-2 rounded-full text-xs font-bold transition-colors duration-200 ${
+                      activeTab === 'create' ? 'text-[#163AC7]' : 'text-[#64748B] hover:text-[#0B132B]'
+                    }`}
+                  >
+                    <FolderPlus className="w-4 h-4" />
+                    <span>Buat Kontainer Baru</span>
+                  </button>
                 </div>
 
+                {/* Tab 1 Content: Mount Gate Dropzone */}
+                {activeTab === 'mount' && (
+                  <div
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                    onDrop={handleDrop}
+                    onClick={() => fileInputRef.current?.click()}
+                    className={`flex-1 flex flex-col items-center justify-center rounded-2xl border-2 border-dashed p-6 sm:p-8 text-center cursor-pointer transition-all duration-200 min-h-[220px] group ${
+                      isDragOver
+                        ? 'border-[#3B5BFF] bg-blue-50/90 ring-4 ring-blue-100/90 scale-[1.01] animate-drag-pulse shadow-lg shadow-blue-500/10'
+                        : 'border-blue-200 hover:border-[#3B5BFF] bg-slate-50/60 hover:bg-slate-50'
+                    }`}
+                  >
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      onChange={handleFileChange}
+                      accept=".pdf,application/pdf"
+                      className="hidden"
+                    />
+                    <div className="w-14 h-14 rounded-2xl bg-[#EEF2FF] text-[#163AC7] flex items-center justify-center mx-auto mb-3.5 group-hover:scale-105 transition-transform duration-200 shadow-xs">
+                      <FileUp className="w-7 h-7" />
+                    </div>
+                    <h4 className="font-bold text-base sm:text-lg text-[#0B132B]">
+                      {isDragOver ? 'Lepaskan Berkas PDF Sekarang' : 'Tarik Berkas PDF Kontainer ke Sini'}
+                    </h4>
+                    <p className="text-xs text-[#64748B] mt-1.5 max-w-sm mx-auto">
+                      Atau klik untuk memilih berkas PDF dari komputer Anda.
+                    </p>
+                  </div>
+                )}
+
+                {/* Tab 2 Content: Create Volume Quick Launcher */}
+                {activeTab === 'create' && (
+                  <div 
+                    onClick={onCreateVolumeClick}
+                    className="flex-1 flex flex-col items-center justify-center rounded-2xl border border-slate-200/80 p-6 sm:p-8 bg-slate-50/50 hover:bg-slate-50 hover:border-[#3B5BFF]/40 cursor-pointer transition-all duration-200 min-h-[220px] text-center group"
+                  >
+                    <div className="w-14 h-14 rounded-2xl bg-[#EEF2FF] text-[#163AC7] flex items-center justify-center mx-auto mb-3.5 group-hover:scale-105 transition-transform duration-200 shadow-xs">
+                      <FolderPlus className="w-7 h-7" />
+                    </div>
+                    <h4 className="font-bold text-base sm:text-lg text-[#0B132B]">Buat Brankas Kontainer Baru</h4>
+                    <p className="text-xs text-[#64748B] mt-1.5 max-w-sm mx-auto leading-relaxed">
+                      Amankan dokumen penting Anda di dalam berkas PDF bertopeng yang dilindungi kata sandi.
+                    </p>
+                  </div>
+                )}
+
                 {/* Bottom CTA Action Button */}
-                <div className="flex items-center justify-end pt-4">
+                <div className="flex items-center justify-end pt-4 shrink-0">
                   {activeTab === 'mount' ? (
                     <button
                       type="button"

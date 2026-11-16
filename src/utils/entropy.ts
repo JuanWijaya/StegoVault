@@ -18,7 +18,7 @@ export class EntropyPool {
   private lastX = 0;
   private lastY = 0;
   private lastTime = 0;
-  private readonly targetSamples = 128;
+  private readonly targetSamples = 350;
 
   constructor() {
     this.reset();
@@ -38,7 +38,9 @@ export class EntropyPool {
     const dy = y - this.lastY;
     const distanceSq = dx * dx + dy * dy;
 
-    if (distanceSq < 9 || dt <= 0) {
+    // Filter pergerakan mikro dan batasi interval sampel (minimal 4px dan minimal 15ms)
+    // Mensimulasikan standar pengumpulan VeraCrypt agar pengguna aktif menggerakkan mouse
+    if (distanceSq < 16 || dt < 15) {
       return this.getState();
     }
 
