@@ -209,7 +209,7 @@ export const CreateVolumeModal: React.FC<CreateVolumeModalProps> = ({
               </div>
               <div>
                 <h3 className="text-lg font-bold text-[#0B132B]">Buat Kontainer Baru</h3>
-                <p className="text-xs text-[#64748B]">Enkripsi AES-256-GCM terselubung dalam 1 dokumen PDF</p>
+                <p className="text-xs text-[#64748B]">Simpan dan amankan berkas dalam kontainer PDF</p>
               </div>
             </div>
 
@@ -230,13 +230,10 @@ export const CreateVolumeModal: React.FC<CreateVolumeModalProps> = ({
                 type="text"
                 value={volumeName}
                 onChange={(e) => setVolumeName(e.target.value)}
-                placeholder="misal: dokumen_pribadi_2026"
+                placeholder="misal: dokumen_pribadi"
                 required
                 className="w-full px-4 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-[#0B132B] text-xs font-mono focus:outline-none focus:border-[#3B5BFF] focus:bg-white transition"
               />
-              <span className="text-[10px] text-[#64748B] mt-1 block">
-                Nama berkas akan disimpan sebagai <code className="text-[#163AC7]">{volumeName || 'vault_container'}.pdf</code>
-              </span>
             </div>
 
             {/* Input Kata Sandi */}
@@ -261,7 +258,7 @@ export const CreateVolumeModal: React.FC<CreateVolumeModalProps> = ({
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Masukkan kata sandi berkekuatan tinggi..."
+                  placeholder="Masukkan kata sandi..."
                   required
                   className="w-full px-4 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-[#0B132B] text-xs font-mono focus:outline-none focus:border-[#3B5BFF] focus:bg-white transition"
                 />
@@ -281,9 +278,6 @@ export const CreateVolumeModal: React.FC<CreateVolumeModalProps> = ({
                       style={{ width: `${entropyAnalysis.score}%` }}
                     />
                   </div>
-                  <span className="text-[10px] text-[#64748B] block">
-                    Estimasi Brute-Force: <span className="text-[#0B132B] font-mono">{entropyAnalysis.crackTime}</span>
-                  </span>
                 </div>
               )}
             </div>
@@ -319,10 +313,10 @@ export const CreateVolumeModal: React.FC<CreateVolumeModalProps> = ({
                   </div>
                   <div>
                     <span className="text-xs font-bold text-[#0B132B] block">
-                      Mode VeraCrypt (Entropi Fisik Mouse)
+                      Mode VeraCrypt (Entropi Mouse)
                     </span>
                     <span className="text-[10px] text-[#64748B] block">
-                      Kumpulkan keacakan alami dari gerakan tangan Anda (CSPRNG + Human)
+                      Tingkatkan keacakan kunci dengan gerakan kursor mouse
                     </span>
                   </div>
                 </div>

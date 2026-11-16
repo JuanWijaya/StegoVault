@@ -6,8 +6,7 @@ import {
   Image as ImageIcon, 
   Code, 
   File, 
-  ShieldCheck,
-  ZoomIn,
+  ZoomIn, 
   ZoomOut
 } from 'lucide-react';
 import { VirtualFile } from '../types/container.ts';
@@ -104,13 +103,8 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
             </div>
             <div className="overflow-hidden">
               <h3 className="text-sm font-bold text-[#0B132B] truncate">{file.name}</h3>
-              <p className="text-[11px] font-mono text-[#64748B] flex items-center gap-2">
-                <span>{formatBytes(file.size)}</span>
-                <span>•</span>
-                <span className="text-emerald-600 flex items-center gap-1 font-semibold">
-                  <ShieldCheck className="w-3.5 h-3.5" />
-                  Pratinjau di Memori (Zero-Disk)
-                </span>
+              <p className="text-xs font-mono text-[#64748B]">
+                {formatBytes(file.size)}
               </p>
             </div>
           </div>

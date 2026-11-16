@@ -117,14 +117,14 @@ export const MountGateModal: React.FC<MountGateModalProps> = ({
               <Unlock className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-[#0B132B]">Buka Kontainer (Mount Gate)</h3>
-              <p className="text-xs text-[#64748B]">Dekripsi virtual filesystem langsung di memori RAM</p>
+              <h3 className="text-lg font-bold text-[#0B132B]">Buka Kontainer</h3>
+              <p className="text-xs text-[#64748B]">Masukkan kata sandi untuk mengakses berkas Anda</p>
             </div>
           </div>
 
           {/* Kartu Informasi Berkas */}
-          <div className="p-4 rounded-2xl bg-[#F4F6FA] border border-slate-200 space-y-3">
-            <div className="flex items-start justify-between gap-3">
+          <div className="p-4 rounded-2xl bg-[#F4F6FA] border border-slate-200">
+            <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-2.5 overflow-hidden">
                 <div className="w-9 h-9 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-[#163AC7] shrink-0">
                   <FileText className="w-4 h-4" />
@@ -138,7 +138,7 @@ export const MountGateModal: React.FC<MountGateModalProps> = ({
               {containerInfo?.isValidStegoVault ? (
                 <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-[11px] font-mono text-emerald-700 shrink-0">
                   <ShieldCheck className="w-3.5 h-3.5" />
-                  <span>STEGOVAULT_V1 Valid</span>
+                  <span>Kontainer Valid</span>
                 </div>
               ) : (
                 <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-50 border border-rose-200 text-[11px] font-mono text-rose-700 shrink-0">
@@ -147,20 +147,6 @@ export const MountGateModal: React.FC<MountGateModalProps> = ({
                 </div>
               )}
             </div>
-
-            {/* Detail Biner O(1) */}
-            {containerInfo?.isValidStegoVault && (
-              <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-200 text-[11px] font-mono text-[#64748B]">
-                <div>
-                  <span className="text-[#64748B]">Ukuran Sampul PDF:</span>
-                  <p className="text-[#0B132B] font-semibold">{formatBytes(containerInfo.coverPdfSize)}</p>
-                </div>
-                <div>
-                  <span className="text-[#64748B]">Payload Terenkripsi:</span>
-                  <p className="text-[#163AC7] font-semibold">{formatBytes(containerInfo.payloadLength || 0)}</p>
-                </div>
-              </div>
-            )}
           </div>
 
           {/* Banner Error */}
@@ -196,14 +182,11 @@ export const MountGateModal: React.FC<MountGateModalProps> = ({
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Masukkan kata sandi untuk mendekripsi..."
+                placeholder="Masukkan kata sandi..."
                 autoFocus
                 required
                 className="w-full px-4 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-[#0B132B] text-xs font-mono focus:outline-none focus:border-[#3B5BFF] focus:bg-white transition"
               />
-              <span className="text-[10px] text-[#64748B] mt-1 block">
-                Dekripsi AES-256-GCM akan otomatis gagal jika kata sandi salah atau bit payload telah dimodifikasi.
-              </span>
             </div>
           ) : (
             <p className="text-xs text-[#64748B] leading-relaxed">
@@ -230,12 +213,12 @@ export const MountGateModal: React.FC<MountGateModalProps> = ({
                 {isMounting ? (
                   <>
                     <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                    <span>Mendekripsi di RAM (310k Iterasi)...</span>
+                    <span>Membuka Brankas...</span>
                   </>
                 ) : (
                   <>
                     <Unlock className="w-3.5 h-3.5" />
-                    <span>Buka Brankas (Mount)</span>
+                    <span>Buka Brankas</span>
                     <ArrowRight className="w-3.5 h-3.5 ml-1" />
                   </>
                 )}

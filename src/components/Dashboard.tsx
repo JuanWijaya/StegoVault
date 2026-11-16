@@ -237,72 +237,93 @@ export const Dashboard: React.FC<DashboardProps> = ({
                 className="w-full flex-1 rounded-[28px] bg-white p-6 sm:p-7 shadow-2xl border border-slate-100 flex flex-col justify-between"
                 spotlightColor="rgba(59, 91, 255, 0.08)"
               >
-              {/* Gliding Segmented Pill Switcher */}
-              <div className="relative flex items-center p-1.5 bg-[#F4F6FA] rounded-full border border-slate-200/80 mb-6">
-                <div 
-                  className={`absolute top-1.5 bottom-1.5 rounded-full bg-white shadow-sm transition-all duration-300 ease-out z-0 ${
-                    activeTab === 'mount' 
-                      ? 'left-1.5 w-[calc(50%-6px)]' 
-                      : 'left-[calc(50%+3px)] w-[calc(50%-6px)]'
-                  }`}
-                />
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('mount')}
-                  aria-label="Pilih mode buka kontainer"
-                  className={`relative z-10 flex-1 min-h-[44px] flex items-center justify-center gap-2 rounded-full text-xs font-bold transition-colors duration-200 ${
-                    activeTab === 'mount' ? 'text-[#163AC7]' : 'text-[#64748B] hover:text-[#0B132B]'
-                  }`}
-                >
-                  <FileUp className="w-4 h-4" />
-                  <span>Buka Kontainer (.pdf)</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('create')}
-                  aria-label="Pilih mode buat kontainer baru"
-                  className={`relative z-10 flex-1 min-h-[44px] flex items-center justify-center gap-2 rounded-full text-xs font-bold transition-colors duration-200 ${
-                    activeTab === 'create' ? 'text-[#163AC7]' : 'text-[#64748B] hover:text-[#0B132B]'
-                  }`}
-                >
-                  <FolderPlus className="w-4 h-4" />
-                  <span>Buat Kontainer Baru</span>
-                </button>
-              </div>
-
-              {/* Tab 1 Content: Mount Gate */}
-              {activeTab === 'mount' && (
-                <div className="space-y-5 animate-in fade-in duration-200">
-                  <div
-                    onDragOver={handleDragOver}
-                    onDragLeave={handleDragLeave}
-                    onDrop={handleDrop}
-                    onClick={() => fileInputRef.current?.click()}
-                    className={`rounded-2xl border-2 border-dashed p-8 text-center cursor-pointer transition-all duration-200 ${
-                      isDragOver
-                        ? 'border-[#3B5BFF] bg-blue-50/90 ring-4 ring-blue-100/90 scale-[1.01] animate-drag-pulse shadow-lg shadow-blue-500/10'
-                        : 'border-blue-200 hover:border-[#3B5BFF] bg-slate-50/60 hover:bg-slate-50'
-                    }`}
-                  >
-                    <input
-                      type="file"
-                      ref={fileInputRef}
-                      onChange={handleFileChange}
-                      accept=".pdf,application/pdf"
-                      className="hidden"
+                <div className="space-y-4">
+                  {/* Gliding Segmented Pill Switcher */}
+                  <div className="relative flex items-center p-1.5 bg-[#F4F6FA] rounded-full border border-slate-200/80">
+                    <div 
+                      className={`absolute top-1.5 bottom-1.5 rounded-full bg-white shadow-sm transition-all duration-300 ease-out z-0 ${
+                        activeTab === 'mount' 
+                          ? 'left-1.5 w-[calc(50%-6px)]' 
+                          : 'left-[calc(50%+3px)] w-[calc(50%-6px)]'
+                      }`}
                     />
-                    <div className="w-12 h-12 rounded-2xl bg-[#EEF2FF] text-[#163AC7] flex items-center justify-center mx-auto mb-3 group-hover:scale-105 transition-transform duration-200">
-                      <FileUp className="w-6 h-6" />
-                    </div>
-                    <h4 className="font-bold text-base text-[#0B132B]">
-                      {isDragOver ? 'Lepaskan Berkas PDF Sekarang' : 'Tarik Berkas PDF Kontainer ke Sini'}
-                    </h4>
-                    <p className="text-xs text-[#64748B] mt-1 max-w-sm mx-auto">
-                      Atau klik untuk memilih berkas dari komputer Anda. StegoVault memeriksa tanda pengenal trailer secara instan dalam O(1).
-                    </p>
+                    <button
+                      type="button"
+                      onClick={() => setActiveTab('mount')}
+                      aria-label="Pilih mode buka kontainer"
+                      className={`relative z-10 flex-1 min-h-[44px] flex items-center justify-center gap-2 rounded-full text-xs font-bold transition-colors duration-200 ${
+                        activeTab === 'mount' ? 'text-[#163AC7]' : 'text-[#64748B] hover:text-[#0B132B]'
+                      }`}
+                    >
+                      <FileUp className="w-4 h-4" />
+                      <span>Buka Kontainer (.pdf)</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setActiveTab('create')}
+                      aria-label="Pilih mode buat kontainer baru"
+                      className={`relative z-10 flex-1 min-h-[44px] flex items-center justify-center gap-2 rounded-full text-xs font-bold transition-colors duration-200 ${
+                        activeTab === 'create' ? 'text-[#163AC7]' : 'text-[#64748B] hover:text-[#0B132B]'
+                      }`}
+                    >
+                      <FolderPlus className="w-4 h-4" />
+                      <span>Buat Kontainer Baru</span>
+                    </button>
                   </div>
 
-                  <div className="flex items-center justify-end pt-2">
+                  {/* Tab 1 Content: Mount Gate Dropzone */}
+                  {activeTab === 'mount' && (
+                    <div
+                      onDragOver={handleDragOver}
+                      onDragLeave={handleDragLeave}
+                      onDrop={handleDrop}
+                      onClick={() => fileInputRef.current?.click()}
+                      className={`rounded-2xl border-2 border-dashed p-7 text-center cursor-pointer transition-all duration-200 ${
+                        isDragOver
+                          ? 'border-[#3B5BFF] bg-blue-50/90 ring-4 ring-blue-100/90 scale-[1.01] animate-drag-pulse shadow-lg shadow-blue-500/10'
+                          : 'border-blue-200 hover:border-[#3B5BFF] bg-slate-50/60 hover:bg-slate-50'
+                      }`}
+                    >
+                      <input
+                        type="file"
+                        ref={fileInputRef}
+                        onChange={handleFileChange}
+                        accept=".pdf,application/pdf"
+                        className="hidden"
+                      />
+                      <div className="w-12 h-12 rounded-2xl bg-[#EEF2FF] text-[#163AC7] flex items-center justify-center mx-auto mb-3 group-hover:scale-105 transition-transform duration-200">
+                        <FileUp className="w-6 h-6" />
+                      </div>
+                      <h4 className="font-bold text-base text-[#0B132B]">
+                        {isDragOver ? 'Lepaskan Berkas PDF Sekarang' : 'Tarik Berkas PDF Kontainer ke Sini'}
+                      </h4>
+                      <p className="text-xs text-[#64748B] mt-1 max-w-sm mx-auto">
+                        Atau klik untuk memilih berkas PDF dari komputer Anda.
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Tab 2 Content: Create Volume Quick Launcher */}
+                  {activeTab === 'create' && (
+                    <div className="rounded-2xl border border-slate-200/80 p-6 bg-slate-50/50">
+                      <div className="flex items-start gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-[#EEF2FF] text-[#163AC7] flex items-center justify-center shrink-0">
+                          <FolderPlus className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-base text-[#0B132B]">Buat Brankas Kontainer Baru</h4>
+                          <p className="text-xs text-[#64748B] mt-1 leading-relaxed">
+                            Amankan dokumen penting Anda di dalam berkas PDF bertopeng yang dilindungi kata sandi.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Bottom CTA Action Button */}
+                <div className="flex items-center justify-end pt-4">
+                  {activeTab === 'mount' ? (
                     <button
                       type="button"
                       onClick={() => fileInputRef.current?.click()}
@@ -313,39 +334,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
                         <ArrowRight className="h-4 w-4" />
                       </span>
                     </button>
-                  </div>
-                </div>
-              )}
-
-              {/* Tab 2 Content: Create Volume Quick Launcher */}
-              {activeTab === 'create' && (
-                <div className="space-y-5 animate-in fade-in duration-200">
-                  <div className="rounded-2xl border border-slate-200/80 p-6 bg-slate-50/50 space-y-4">
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-[#EEF2FF] text-[#163AC7] flex items-center justify-center shrink-0">
-                        <FolderPlus className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-base text-[#0B132B]">Inisialisasi Brankas Baru</h4>
-                        <p className="text-xs text-[#64748B] mt-1 leading-relaxed">
-                          Hasilkan dokumen PDF valid satu halaman dengan payload terenkripsi biner dan proteksi master password 310.000 iterasi.
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-2 text-[11px] font-mono text-[#64748B] pt-2 border-t border-slate-200/70">
-                      <div>
-                        <span className="text-[#0B132B] font-semibold block">Sampul Resmi:</span>
-                        <span>%PDF-1.7 Valid</span>
-                      </div>
-                      <div>
-                        <span className="text-[#0B132B] font-semibold block">Entropi:</span>
-                        <span>Hardware CSPRNG / VeraCrypt</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-end pt-2">
+                  ) : (
                     <button
                       type="button"
                       onClick={onCreateVolumeClick}
@@ -356,10 +345,9 @@ export const Dashboard: React.FC<DashboardProps> = ({
                         <ArrowRight className="h-4 w-4" />
                       </span>
                     </button>
-                  </div>
+                  )}
                 </div>
-              )}
-            </SpotlightCard>
+              </SpotlightCard>
 
             {/* Baris Khusus Mobile: 2 Kartu Tombol Tutorial Bersebelahan */}
             <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:hidden">

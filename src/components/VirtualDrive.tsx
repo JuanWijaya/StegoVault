@@ -12,9 +12,9 @@ import {
   Code, 
   FileArchive, 
   File, 
-  ShieldCheck, 
   Loader2,
-  HardDrive
+  HardDrive,
+  ArrowLeft
 } from 'lucide-react';
 import { VirtualFile } from '../types/container.ts';
 import { formatBytes } from '../utils/crypto.ts';
@@ -106,6 +106,18 @@ export const VirtualDrive: React.FC<VirtualDriveProps> = ({
     return <File className="w-5 h-5 text-slate-500" />;
   };
 
+  const getFileTypeName = (file: VirtualFile): string => {
+    const mime = file.mimeType.toLowerCase();
+    const ext = file.name.split('.').pop()?.toUpperCase() || '';
+    if (mime === 'application/pdf' || ext === 'PDF') return 'Dokumen PDF';
+    if (mime.startsWith('image/')) return ext ? `Gambar (${ext})` : 'Gambar';
+    if (mime.includes('zip') || mime.includes('tar') || mime.includes('rar') || mime.includes('gzip')) return 'Arsip ZIP';
+    if (mime.startsWith('text/') || mime.includes('json') || mime.includes('javascript') || mime.includes('typescript')) return ext ? `Teks (${ext})` : 'Teks';
+    if (mime.includes('word') || ext === 'DOCX' || ext === 'DOC') return 'Dokumen Word';
+    if (mime.includes('sheet') || ext === 'XLSX' || ext === 'XLS') return 'Spreadsheet';
+    return ext ? `Berkas ${ext}` : 'Biner';
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
       {/* 1. Compact Cobalt Top Header */}
@@ -117,29 +129,36 @@ export const VirtualDrive: React.FC<VirtualDriveProps> = ({
           <div>
             <div className="flex flex-wrap items-center gap-2 sm:gap-3">
               <h2 className="text-xl font-extrabold text-white tracking-tight">{volumeName}</h2>
-              <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-[11px] font-mono text-emerald-300">
-                <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-                Mounted (AES-256-GCM Active)
+              <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-[11px] font-medium text-emerald-300">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                Brankas Terbuka
               </span>
             </div>
-            <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs font-mono text-[#B8C7F0] mt-1.5">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs text-[#B8C7F0] mt-1.5">
               <span className="flex items-center gap-1">
                 <HardDrive className="w-3.5 h-3.5 text-sky-300" />
                 {files.size} Berkas
               </span>
               <span>•</span>
-              <span className="text-white font-semibold">{formatBytes(totalBytes)} Payload</span>
-              <span>•</span>
-              <span className="text-emerald-300 flex items-center gap-1">
-                <ShieldCheck className="w-3.5 h-3.5" />
-                Zero-Knowledge RAM
-              </span>
+              <span className="text-white font-medium">{formatBytes(totalBytes)}</span>
             </div>
           </div>
         </div>
 
-        {/* Action Buttons: Add File & Unmount */}
+        {/* Action Buttons: Back, Add File & Unmount */}
         <div className="flex flex-wrap items-center gap-3 w-full md:w-auto justify-start sm:justify-end">
+          <button
+            type="button"
+            onClick={() => onUnmount(false)}
+            disabled={isUnmounting}
+            aria-label="Kembali ke beranda"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/10 hover:bg-white/20 active:scale-[0.97] text-xs font-semibold text-white border border-white/20 shadow-sm transition-all duration-150 min-h-[44px]"
+            title="Kembali ke beranda tanpa menyimpan perubahan"
+          >
+            <ArrowLeft className="w-4 h-4 text-sky-200" />
+            <span>Kembali ke Beranda</span>
+          </button>
+
           <input
             type="file"
             ref={fileInputRef}
@@ -243,7 +262,7 @@ export const VirtualDrive: React.FC<VirtualDriveProps> = ({
                 <thead>
                   <tr className="border-b border-slate-100 text-[11px] font-mono text-[#64748B] uppercase tracking-wider bg-slate-50/40">
                     <th className="py-3.5 px-6 font-semibold">Nama Berkas</th>
-                    <th className="py-3.5 px-4 font-semibold">Tipe MIME</th>
+                    <th className="py-3.5 px-4 font-semibold">Tipe Berkas</th>
                     <th className="py-3.5 px-4 font-semibold">Ukuran</th>
                     <th className="py-3.5 px-4 font-semibold">Waktu Ditambahkan</th>
                     <th className="py-3.5 px-6 text-right font-semibold">Aksi</th>
@@ -263,13 +282,13 @@ export const VirtualDrive: React.FC<VirtualDriveProps> = ({
                           <span className="font-semibold text-[#0B132B] truncate max-w-xs">{file.name}</span>
                         </div>
                       </td>
-                      <td className="py-3.5 px-4 font-mono text-[#64748B] text-[11px]">
-                        {file.mimeType}
+                      <td className="py-3.5 px-4 font-mono text-[#64748B] text-xs">
+                        {getFileTypeName(file)}
                       </td>
-                      <td className="py-3.5 px-4 font-mono text-[#0B132B] text-[11px]">
+                      <td className="py-3.5 px-4 font-mono text-[#0B132B] text-xs">
                         {formatBytes(file.size)}
                       </td>
-                      <td className="py-3.5 px-4 font-mono text-[#64748B] text-[11px]">
+                      <td className="py-3.5 px-4 font-mono text-[#64748B] text-xs">
                         {new Date(file.modifiedAt).toLocaleTimeString()}
                       </td>
                       <td className="py-3.5 px-6 text-right">
@@ -279,7 +298,7 @@ export const VirtualDrive: React.FC<VirtualDriveProps> = ({
                             onClick={() => setPreviewFile(file)}
                             aria-label={`Lihat pratinjau ${file.name}`}
                             className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl hover:bg-[#EEF2FF] text-[#163AC7] transition"
-                            title="Lihat Pratinjau di Memori (Zero-Disk)"
+                            title="Lihat Pratinjau"
                           >
                             <Eye className="w-4 h-4" />
                           </button>
@@ -288,7 +307,7 @@ export const VirtualDrive: React.FC<VirtualDriveProps> = ({
                             onClick={() => handleExportFile(file)}
                             aria-label={`Ekspor ${file.name} ke komputer`}
                             className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl hover:bg-slate-100 text-[#0B132B] transition"
-                            title="Ekspor Berkas ke Komputer"
+                            title="Unduh Berkas"
                           >
                             <Download className="w-4 h-4" />
                           </button>
@@ -322,14 +341,14 @@ export const VirtualDrive: React.FC<VirtualDriveProps> = ({
                     </div>
                     <div className="min-w-0 flex-1">
                       <p className="font-semibold text-sm text-[#0B132B] truncate">{file.name}</p>
-                      <p className="text-[11px] font-mono text-[#64748B]">
-                        {formatBytes(file.size)} • {file.mimeType}
+                      <p className="text-xs font-mono text-[#64748B]">
+                        {formatBytes(file.size)} • {getFileTypeName(file)}
                       </p>
                     </div>
                   </div>
 
                   <div className="flex items-center justify-between pt-2 border-t border-slate-100 text-xs">
-                    <span className="text-[10px] font-mono text-[#64748B]">
+                    <span className="text-xs font-mono text-[#64748B]">
                       {new Date(file.modifiedAt).toLocaleTimeString()}
                     </span>
                     <div className="flex items-center gap-1">
@@ -366,9 +385,8 @@ export const VirtualDrive: React.FC<VirtualDriveProps> = ({
         )}
 
         {/* Drag Hint Footer */}
-        <div className="px-6 py-3 bg-slate-50/80 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between text-[11px] text-[#64748B] gap-1">
-          <span>Tarik dan lepas berkas langsung ke area ini kapan saja.</span>
-          <span className="font-mono text-[#163AC7] font-medium">Enkripsi AES-256-GCM diterapkan saat Unmount</span>
+        <div className="px-6 py-3 bg-slate-50/80 border-t border-slate-100 text-center text-xs text-[#64748B]">
+          <span>Tarik dan lepas berkas langsung ke area ini untuk menambahkannya ke brankas.</span>
         </div>
       </div>
 
