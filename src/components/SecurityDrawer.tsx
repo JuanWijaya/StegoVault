@@ -74,7 +74,7 @@ export const SecurityDrawer: React.FC<SecurityDrawerProps> = ({
     try {
       const salt = generateSalt();
       const iv = generateIV();
-      const sample = new Uint8Array(256 * 1024);
+      const sample = new Uint8Array(64 * 1024);
       crypto.getRandomValues(sample);
 
       const { key, durationMs: kdfMs } = await deriveKey('BenchmarkPassword#2026', salt);

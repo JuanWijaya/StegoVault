@@ -30,3 +30,10 @@ Thumbs.db
 
 # TypeScript cache
 *.tsbuildinfo
+
+# Video Demo & Local Agent Config
+.video-demo/
+demo-out/
+skills-lock.json
+.agents/
+

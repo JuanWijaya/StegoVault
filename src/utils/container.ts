@@ -141,204 +141,464 @@ export function unpackVirtualFilesystem(
 
 export async function generateCoverPdf(volumeName: string): Promise<Uint8Array> {
   const pdfDoc = await PDFDocument.create();
-  const page = pdfDoc.addPage([595.28, 841.89]);
+  const page = pdfDoc.addPage([595.28, 841.89]); // A4 dimensions
   const { width, height } = page.getSize();
 
   const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
   const fontRegular = await pdfDoc.embedFont(StandardFonts.Helvetica);
   const fontMono = await pdfDoc.embedFont(StandardFonts.CourierBold);
 
+  // Palette warna enterprise invoice
+  const brandNavy = rgb(0.08, 0.16, 0.32);
+  const accentBlue = rgb(0.14, 0.38, 0.82);
+  const darkText = rgb(0.12, 0.15, 0.22);
+  const bodyText = rgb(0.25, 0.30, 0.38);
+  const mutedText = rgb(0.48, 0.54, 0.62);
+  const borderLight = rgb(0.86, 0.89, 0.94);
+  const greenText = rgb(0.10, 0.58, 0.32);
+
+  // 1. Top Brand Accent Bar
   page.drawRectangle({
-    x: 36,
-    y: 36,
-    width: width - 72,
-    height: height - 72,
-    borderColor: rgb(0.15, 0.35, 0.75),
-    borderWidth: 2,
-    color: rgb(0.98, 0.99, 1.0),
+    x: 0,
+    y: height - 6,
+    width: width,
+    height: 6,
+    color: brandNavy,
   });
 
-  page.drawRectangle({
-    x: 36,
-    y: height - 120,
-    width: width - 72,
-    height: 84,
-    color: rgb(0.04, 0.08, 0.18),
-  });
-
-  page.drawText('STEGOVAULT  *  SECURE STORAGE ENCLAVE', {
-    x: 56,
-    y: height - 68,
-    size: 11,
-    font: fontMono,
-    color: rgb(0.22, 0.74, 0.97),
-  });
-
-  page.drawText('DOKUMEN KONTAINER TERENKRIPSI', {
-    x: 56,
-    y: height - 94,
-    size: 18,
+  // 2. Header Section (Company Info & Invoice Header)
+  page.drawText('NEXA CLOUD TECHNOLOGIES', {
+    x: 44,
+    y: height - 50,
+    size: 15,
     font: fontBold,
-    color: rgb(1, 1, 1),
+    color: brandNavy,
   });
 
-  page.drawRectangle({
-    x: 56,
-    y: height - 180,
-    width: width - 112,
-    height: 38,
-    color: rgb(0.93, 0.96, 1.0),
-    borderColor: rgb(0.7, 0.82, 0.98),
-    borderWidth: 1,
-  });
-
-  page.drawText('ENKRIPSI TERAUTENTIKASI: AES-256-GCM  *  KDF: PBKDF2-SHA256 (310,000 ITERASI)', {
-    x: 72,
-    y: height - 164,
-    size: 9.5,
-    font: fontMono,
-    color: rgb(0.12, 0.35, 0.8),
-  });
-
-  const safeVolumeName = volumeName.length > 40 ? volumeName.substring(0, 37) + '...' : volumeName;
-  page.drawText('INFORMASI VOLUME KONTAINER:', {
-    x: 56,
-    y: height - 220,
-    size: 11,
-    font: fontBold,
-    color: rgb(0.1, 0.15, 0.3),
-  });
-
-  page.drawText(`Nama Volume   : ${safeVolumeName}`, {
-    x: 56,
-    y: height - 242,
-    size: 10,
+  page.drawText('Enterprise Cloud Infrastructure & IT Solutions', {
+    x: 44,
+    y: height - 64,
+    size: 8.5,
     font: fontRegular,
-    color: rgb(0.2, 0.25, 0.35),
+    color: mutedText,
   });
 
-  page.drawText(`Waktu Dibuat  : ${new Date().toUTCString()}`, {
-    x: 56,
-    y: height - 258,
-    size: 10,
-    font: fontRegular,
-    color: rgb(0.2, 0.25, 0.35),
-  });
-
-  page.drawText(`Format Wadah  : PDF-Wrapped Container (STEGOVAULT_V1)`, {
-    x: 56,
-    y: height - 274,
-    size: 10,
-    font: fontRegular,
-    color: rgb(0.2, 0.25, 0.35),
-  });
-
-  page.drawRectangle({
-    x: 56,
-    y: height - 440,
-    width: width - 112,
-    height: 140,
-    color: rgb(1, 1, 1),
-    borderColor: rgb(0.85, 0.9, 0.95),
-    borderWidth: 1,
-  });
-
-  page.drawText('PETUNJUK PENGGUNAAN:', {
-    x: 76,
-    y: height - 325,
-    size: 11,
-    font: fontBold,
-    color: rgb(0.1, 0.2, 0.4),
-  });
-
-  page.drawText('1. Berkas ini bukan dokumen PDF biasa. Dokumen ini merupakan brankas berkas virtual', {
-    x: 76,
-    y: height - 345,
-    size: 9.5,
-    font: fontRegular,
-    color: rgb(0.2, 0.25, 0.35),
-  });
-
-  page.drawText('   yang dienkripsi menggunakan standar AES-256-GCM.', {
-    x: 76,
-    y: height - 360,
-    size: 9.5,
-    font: fontRegular,
-    color: rgb(0.2, 0.25, 0.35),
-  });
-
-  page.drawText('2. Gunakan aplikasi web StegoVault untuk membuka (Mount), melihat pratinjau berkas,', {
-    x: 76,
-    y: height - 380,
-    size: 9.5,
-    font: fontRegular,
-    color: rgb(0.2, 0.25, 0.35),
-  });
-
-  page.drawText('   atau mengekstrak kembali isi dokumen secara aman.', {
-    x: 76,
-    y: height - 395,
-    size: 9.5,
-    font: fontRegular,
-    color: rgb(0.2, 0.25, 0.35),
-  });
-
-  page.drawText('3. Seluruh proses pembukaan volume berjalan di memori peramban Anda (Zero-Knowledge).', {
-    x: 76,
-    y: height - 415,
-    size: 9.5,
-    font: fontRegular,
-    color: rgb(0.2, 0.25, 0.35),
-  });
-
-  page.drawRectangle({
-    x: 56,
-    y: 80,
-    width: width - 112,
-    height: 90,
-    color: rgb(1.0, 0.96, 0.96),
-    borderColor: rgb(0.95, 0.7, 0.7),
-    borderWidth: 1,
-  });
-
-  page.drawText('PERINGATAN PENTING (SECURITY INTEGRITY NOTICE):', {
-    x: 76,
-    y: 145,
-    size: 10,
-    font: fontBold,
-    color: rgb(0.75, 0.1, 0.1),
-  });
-
-  page.drawText('Dilarang mengedit, menggabungkan (merge), mengompres, atau menyimpan ulang berkas ini', {
-    x: 76,
-    y: 125,
-    size: 9,
-    font: fontRegular,
-    color: rgb(0.4, 0.15, 0.15),
-  });
-
-  page.drawText('menggunakan aplikasi pembaca PDF eksternal. Perubahan akan merusak blok payload', {
-    x: 76,
-    y: 110,
-    size: 9,
-    font: fontRegular,
-    color: rgb(0.4, 0.15, 0.15),
-  });
-
-  page.drawText('terenkripsi dan menyebabkan seluruh data volume gagal didekripsi secara permanen.', {
-    x: 76,
-    y: 95,
-    size: 9,
-    font: fontRegular,
-    color: rgb(0.4, 0.15, 0.15),
-  });
-
-  page.drawText('StegoVault Architecture * Lomba CAPSTONE 2026 * Kriptografi dan Keamanan Data', {
-    x: 56,
-    y: 52,
+  page.drawText('Menara Sudirman Lt. 18, Jl. Jend. Sudirman Kav. 60, Jakarta 12190', {
+    x: 44,
+    y: height - 76,
     size: 8,
     font: fontRegular,
-    color: rgb(0.5, 0.55, 0.65),
+    color: mutedText,
+  });
+
+  page.drawText('Email: billing@nexacloud.id | Tel: +62 21 5289-7000 | www.nexacloud.id', {
+    x: 44,
+    y: height - 88,
+    size: 8,
+    font: fontRegular,
+    color: mutedText,
+  });
+
+  // Invoice Title & Status Badge (Right)
+  page.drawText('FAKTUR / INVOICE', {
+    x: width - 195,
+    y: height - 50,
+    size: 15,
+    font: fontBold,
+    color: brandNavy,
+  });
+
+  page.drawRectangle({
+    x: width - 145,
+    y: height - 82,
+    width: 101,
+    height: 20,
+    color: rgb(0.92, 0.98, 0.94),
+    borderColor: greenText,
+    borderWidth: 1,
+  });
+
+  page.drawText('LUNAS / PAID', {
+    x: width - 130,
+    y: height - 76,
+    size: 8.5,
+    font: fontBold,
+    color: greenText,
+  });
+
+  // Divider Line
+  page.drawLine({
+    start: { x: 44, y: height - 104 },
+    end: { x: width - 44, y: height - 104 },
+    thickness: 1,
+    color: borderLight,
+  });
+
+  // Dynamic values
+  const now = new Date();
+  const issueDateStr = now.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+  const dueDate = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+  const dueDateStr = dueDate.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+
+  const safeVolumeName = volumeName.trim() || 'Data_Archive';
+  let hashVal = 0;
+  for (let i = 0; i < safeVolumeName.length; i++) {
+    hashVal = (hashVal * 31 + safeVolumeName.charCodeAt(i)) & 0xffff;
+  }
+  const invNumber = `INV/${now.getFullYear()}/XI/${String((hashVal % 8999) + 1000)}`;
+  const poNumber = `PO-${now.getFullYear()}-${String(((hashVal * 7) % 89999) + 10000)}`;
+  const displayVolume = safeVolumeName.length > 26 ? safeVolumeName.substring(0, 23) + '...' : safeVolumeName;
+
+  // 3. Billing Details (Two Columns)
+  // Left: Customer / Billed To
+  page.drawText('TAGIHAN KEPADA (BILLED TO):', {
+    x: 44,
+    y: height - 124,
+    size: 8,
+    font: fontBold,
+    color: mutedText,
+  });
+
+  page.drawText('PT. CIPTA MEGA PERSADA', {
+    x: 44,
+    y: height - 138,
+    size: 10,
+    font: fontBold,
+    color: darkText,
+  });
+
+  page.drawText('Divisi Teknologi Informasi & Pengadaan Sistem', {
+    x: 44,
+    y: height - 152,
+    size: 8.5,
+    font: fontRegular,
+    color: bodyText,
+  });
+
+  page.drawText('NPWP: 01.345.678.9-012.000', {
+    x: 44,
+    y: height - 165,
+    size: 8.5,
+    font: fontRegular,
+    color: bodyText,
+  });
+
+  page.drawText('Gedung Bursa Efek Indonesia Tower 2, Jakarta', {
+    x: 44,
+    y: height - 178,
+    size: 8.5,
+    font: fontRegular,
+    color: bodyText,
+  });
+
+  page.drawText('Email: finance@ciptamega.co.id', {
+    x: 44,
+    y: height - 191,
+    size: 8.5,
+    font: fontRegular,
+    color: bodyText,
+  });
+
+  // Right: Invoice Metadata
+  page.drawText('Nomor Invoice', { x: 320, y: height - 124, size: 8, font: fontRegular, color: mutedText });
+  page.drawText(`: ${invNumber}`, { x: 410, y: height - 124, size: 8.5, font: fontBold, color: darkText });
+
+  page.drawText('Tanggal Terbit', { x: 320, y: height - 138, size: 8, font: fontRegular, color: mutedText });
+  page.drawText(`: ${issueDateStr}`, { x: 410, y: height - 138, size: 8.5, font: fontRegular, color: darkText });
+
+  page.drawText('Jatuh Tempo', { x: 320, y: height - 152, size: 8, font: fontRegular, color: mutedText });
+  page.drawText(`: ${dueDateStr}`, { x: 410, y: height - 152, size: 8.5, font: fontRegular, color: darkText });
+
+  page.drawText('No. Pemesanan (PO)', { x: 320, y: height - 165, size: 8, font: fontRegular, color: mutedText });
+  page.drawText(`: ${poNumber}`, { x: 410, y: height - 165, size: 8.5, font: fontRegular, color: darkText });
+
+  page.drawText('Referensi Proyek', { x: 320, y: height - 178, size: 8, font: fontRegular, color: mutedText });
+  page.drawText(`: ${displayVolume}`, { x: 410, y: height - 178, size: 8.5, font: fontBold, color: accentBlue });
+
+  page.drawText('Metode Pembayaran', { x: 320, y: height - 191, size: 8, font: fontRegular, color: mutedText });
+  page.drawText(': Transfer Bank (BCA Corporate)', { x: 410, y: height - 191, size: 8.5, font: fontRegular, color: darkText });
+
+  // 4. Line Items Table
+  const tableY = height - 215;
+  page.drawRectangle({
+    x: 44,
+    y: tableY - 22,
+    width: width - 88,
+    height: 22,
+    color: rgb(0.93, 0.95, 0.98),
+    borderColor: borderLight,
+    borderWidth: 1,
+  });
+
+  page.drawText('NO', { x: 52, y: tableY - 15, size: 7.5, font: fontBold, color: darkText });
+  page.drawText('DESKRIPSI LAYANAN / PRODUK', { x: 80, y: tableY - 15, size: 7.5, font: fontBold, color: darkText });
+  page.drawText('DURASI', { x: 320, y: tableY - 15, size: 7.5, font: fontBold, color: darkText });
+  page.drawText('HARGA SATUAN', { x: 395, y: tableY - 15, size: 7.5, font: fontBold, color: darkText });
+  page.drawText('TOTAL (IDR)', { x: 480, y: tableY - 15, size: 7.5, font: fontBold, color: darkText });
+
+  const items = [
+    {
+      no: '1',
+      title: 'Enterprise Cloud Storage Vault & Automated Snapshot Enclave',
+      subtitle: 'Kapasitas dedicated high-availability tier 1 multi-region SLA 99.9%',
+      qty: '1 Tahun',
+      rate: 'Rp 8.500.000',
+      total: 'Rp 8.500.000',
+    },
+    {
+      no: '2',
+      title: 'Managed Security Compliance & Zero-Trust Protocol Service',
+      subtitle: 'Proteksi end-to-end terisolasi, audit berkala & proteksi integritas',
+      qty: '1 Paket',
+      rate: 'Rp 6.200.000',
+      total: 'Rp 6.200.000',
+    },
+    {
+      no: '3',
+      title: 'Dedicated SSL/TLS Transport & Virtual Endpoint Gateway',
+      subtitle: 'Konfigurasi gateway reverse-proxy terenkripsi tersertifikasi ISO 27001',
+      qty: '1 Tahun',
+      rate: 'Rp 3.800.000',
+      total: 'Rp 3.800.000',
+    },
+    {
+      no: '4',
+      title: 'Dukungan Teknis Prioritas 24/7 & Disaster Recovery SLA',
+      subtitle: 'Pemeliharaan preventif dan backup berkala terverifikasi enterprise',
+      qty: '12 Bulan',
+      rate: 'Rp 2.500.000',
+      total: 'Rp 2.500.000',
+    },
+  ];
+
+  let currentItemY = tableY - 22;
+  for (let idx = 0; idx < items.length; idx++) {
+    const item = items[idx];
+    const rowHeight = 36;
+    const rowBg = idx % 2 === 1 ? rgb(0.985, 0.99, 1.0) : rgb(1, 1, 1);
+
+    page.drawRectangle({
+      x: 44,
+      y: currentItemY - rowHeight,
+      width: width - 88,
+      height: rowHeight,
+      color: rowBg,
+      borderColor: borderLight,
+      borderWidth: 0.5,
+    });
+
+    page.drawText(item.no, { x: 56, y: currentItemY - 16, size: 8, font: fontRegular, color: bodyText });
+    page.drawText(item.title, { x: 80, y: currentItemY - 14, size: 8, font: fontBold, color: darkText });
+    page.drawText(item.subtitle, { x: 80, y: currentItemY - 26, size: 7, font: fontRegular, color: mutedText });
+    page.drawText(item.qty, { x: 320, y: currentItemY - 18, size: 8, font: fontRegular, color: bodyText });
+    page.drawText(item.rate, { x: 395, y: currentItemY - 18, size: 8, font: fontRegular, color: bodyText });
+    page.drawText(item.total, { x: 480, y: currentItemY - 18, size: 8, font: fontBold, color: darkText });
+
+    currentItemY -= rowHeight;
+  }
+
+  // 5. Payment Details (Left) & Totals Summary (Right)
+  const summaryBoxY = currentItemY - 18;
+
+  // Left: Bank Information Box
+  page.drawRectangle({
+    x: 44,
+    y: summaryBoxY - 96,
+    width: 250,
+    height: 96,
+    color: rgb(0.98, 0.99, 1.0),
+    borderColor: borderLight,
+    borderWidth: 1,
+  });
+
+  page.drawText('INFORMASI REKENING & PEMBAYARAN:', {
+    x: 54,
+    y: summaryBoxY - 16,
+    size: 7.5,
+    font: fontBold,
+    color: brandNavy,
+  });
+
+  page.drawText('Nama Bank     : Bank Central Asia (BCA)', {
+    x: 54,
+    y: summaryBoxY - 32,
+    size: 7.5,
+    font: fontRegular,
+    color: bodyText,
+  });
+
+  page.drawText('No. Rekening  : 541-098-2190', {
+    x: 54,
+    y: summaryBoxY - 45,
+    size: 8,
+    font: fontBold,
+    color: darkText,
+  });
+
+  page.drawText('Atas Nama     : PT NEXA CLOUD TECHNOLOGIES', {
+    x: 54,
+    y: summaryBoxY - 58,
+    size: 7.5,
+    font: fontRegular,
+    color: bodyText,
+  });
+
+  page.drawText('Status Verifikasi: LUNAS (Terekonsiliasi Otomatis)', {
+    x: 54,
+    y: summaryBoxY - 72,
+    size: 7.5,
+    font: fontBold,
+    color: greenText,
+  });
+
+  page.drawText('* Bukti setor elektronik sah tercatat di server bank.', {
+    x: 54,
+    y: summaryBoxY - 86,
+    size: 7,
+    font: fontRegular,
+    color: mutedText,
+  });
+
+  // Right: Summary Table Box
+  page.drawRectangle({
+    x: 308,
+    y: summaryBoxY - 96,
+    width: width - 44 - 308,
+    height: 96,
+    color: rgb(0.99, 0.99, 1.0),
+    borderColor: borderLight,
+    borderWidth: 1,
+  });
+
+  page.drawText('Subtotal Layanan', { x: 320, y: summaryBoxY - 18, size: 8, font: fontRegular, color: bodyText });
+  page.drawText('Rp 21.000.000', { x: 440, y: summaryBoxY - 18, size: 8, font: fontRegular, color: darkText });
+
+  page.drawText('PPN / VAT (11%)', { x: 320, y: summaryBoxY - 34, size: 8, font: fontRegular, color: bodyText });
+  page.drawText('Rp 2.310.000', { x: 440, y: summaryBoxY - 34, size: 8, font: fontRegular, color: darkText });
+
+  page.drawLine({
+    start: { x: 320, y: summaryBoxY - 44 },
+    end: { x: width - 56, y: summaryBoxY - 44 },
+    thickness: 0.8,
+    color: borderLight,
+  });
+
+  page.drawText('Total Pembayaran', { x: 320, y: summaryBoxY - 58, size: 9, font: fontBold, color: brandNavy });
+  page.drawText('Rp 23.310.000', { x: 432, y: summaryBoxY - 58, size: 9, font: fontBold, color: brandNavy });
+
+  page.drawText('Telah Dibayar (Paid)', { x: 320, y: summaryBoxY - 72, size: 7.5, font: fontRegular, color: mutedText });
+  page.drawText('Rp 23.310.000', { x: 440, y: summaryBoxY - 72, size: 7.5, font: fontRegular, color: mutedText });
+
+  page.drawText('Sisa Tagihan (Balance)', { x: 320, y: summaryBoxY - 86, size: 8, font: fontBold, color: greenText });
+  page.drawText('Rp 0 (LUNAS)', { x: 440, y: summaryBoxY - 86, size: 8, font: fontBold, color: greenText });
+
+  // 6. Notes (Left) & Authorized Signature Stamp (Right)
+  const notesY = summaryBoxY - 114;
+
+  // Left: Terms
+  page.drawText('CATATAN DAN KETENTUAN (TERMS & CONDITIONS):', {
+    x: 44,
+    y: notesY,
+    size: 7.5,
+    font: fontBold,
+    color: mutedText,
+  });
+
+  page.drawText('1. Faktur ini merupakan dokumen elektronik resmi yang diterbitkan sah oleh sistem ERP.', {
+    x: 44,
+    y: notesY - 14,
+    size: 7.5,
+    font: fontRegular,
+    color: bodyText,
+  });
+
+  page.drawText('2. Layanan cloud provisioning dan data enclave telah aktif selama periode lisensi berjalan.', {
+    x: 44,
+    y: notesY - 26,
+    size: 7.5,
+    font: fontRegular,
+    color: bodyText,
+  });
+
+  page.drawText('3. Bukti potong pajak dan faktur pajak elektronik dapat diunduh via portal billing.', {
+    x: 44,
+    y: notesY - 38,
+    size: 7.5,
+    font: fontRegular,
+    color: bodyText,
+  });
+
+  page.drawText('4. Untuk pertanyaan seputar rekonsiliasi faktur, hubungi finance@nexacloud.id.', {
+    x: 44,
+    y: notesY - 50,
+    size: 7.5,
+    font: fontRegular,
+    color: bodyText,
+  });
+
+  // Right: Signature & Seal
+  page.drawText('Hormat kami,', { x: 360, y: notesY, size: 8, font: fontRegular, color: bodyText });
+  page.drawText('PT NEXA CLOUD TECHNOLOGIES', { x: 360, y: notesY - 12, size: 8.5, font: fontBold, color: brandNavy });
+
+  page.drawRectangle({
+    x: 360,
+    y: notesY - 58,
+    width: 160,
+    height: 40,
+    color: rgb(0.95, 0.97, 1.0),
+    borderColor: accentBlue,
+    borderWidth: 1,
+  });
+
+  page.drawText('[ DIGITAL SIGNATURE & STAMP ]', {
+    x: 372,
+    y: notesY - 30,
+    size: 7,
+    font: fontBold,
+    color: accentBlue,
+  });
+
+  page.drawText('VERIFIED & PAID INVOICE', {
+    x: 382,
+    y: notesY - 42,
+    size: 6.5,
+    font: fontBold,
+    color: greenText,
+  });
+
+  page.drawText(`Auth Code: NX-${hashVal.toString(16).toUpperCase()}-2026`, {
+    x: 384,
+    y: notesY - 52,
+    size: 6.5,
+    font: fontMono,
+    color: mutedText,
+  });
+
+  page.drawText('Ir. Hendra Wijaya, M.M.', { x: 360, y: notesY - 72, size: 8.5, font: fontBold, color: darkText });
+  page.drawText('Head of Corporate Billing & Finance Operations', { x: 360, y: notesY - 84, size: 7.5, font: fontRegular, color: mutedText });
+
+  // 7. Footer Bar
+  page.drawLine({
+    start: { x: 44, y: 44 },
+    end: { x: width - 44, y: 44 },
+    thickness: 0.5,
+    color: borderLight,
+  });
+
+  page.drawText(`Faktur Pajak Sah | ID: ${invNumber} | Generated by Nexa ERP Billing Engine | Halaman 1 dari 1`, {
+    x: 44,
+    y: 30,
+    size: 7,
+    font: fontRegular,
+    color: mutedText,
+  });
+
+  page.drawText('ISO 27001 Certified Enterprise Security Enclave', {
+    x: width - 200,
+    y: 30,
+    size: 7,
+    font: fontRegular,
+    color: mutedText,
   });
 
   const pdfBytes = await pdfDoc.save();

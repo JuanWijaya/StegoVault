@@ -53,10 +53,12 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
     const mime = file.mimeType.toLowerCase();
     const isText = mime.startsWith('text/') || 
                    mime.includes('json') || 
+                   mime.includes('csv') || 
                    mime.includes('javascript') || 
                    mime.includes('typescript') ||
                    file.name.endsWith('.txt') ||
                    file.name.endsWith('.md') ||
+                   file.name.endsWith('.csv') ||
                    file.name.endsWith('.json') ||
                    file.name.endsWith('.js') ||
                    file.name.endsWith('.ts') ||
@@ -64,8 +66,10 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
 
     if (isText) {
       try {
-        const text = new TextDecoder('utf-8').decode(file.data);
-        setTextContent(text);
+        const maxPreviewBytes = 80_000;
+        const slice = file.data.byteLength > maxPreviewBytes ? file.data.subarray(0, maxPreviewBytes) : file.data;
+        const text = new TextDecoder('utf-8').decode(slice);
+        setTextContent(file.data.byteLength > maxPreviewBytes ? text + '\n\n... [Menampilkan 80 KB awal dari ' + formatBytes(file.size) + ' untuk pratinjau cepat] ...' : text);
       } catch {
         setTextContent('Tidak dapat membaca konten teks.');
       }
